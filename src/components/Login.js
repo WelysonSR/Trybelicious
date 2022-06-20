@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
+import UserContext from '../context/UserContext';
 
 function Login() {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [enabled, setEnabled] = useState(true);
+  const { setUser } = useContext(UserContext);
 
   const validateEmail = (verify) => {
     const regex = /\S+@\S+\.\S+/;
@@ -13,7 +15,7 @@ function Login() {
   };
 
   useEffect(() => {
-    const number = 5;
+    const number = 6;
     if (validateEmail(email) && password.length > number) {
       setEnabled(false);
     } else {
@@ -22,6 +24,10 @@ function Login() {
   }, [email, password]);
 
   const handleEnterClick = () => {
+    localStorage.setItem('mealsToken', 1);
+    localStorage.setItem('cocktailsToken', 1);
+    localStorage.setItem('user', JSON.stringify({ email }));
+    setUser(email);
     history.push('/foods');
   };
 
