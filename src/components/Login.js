@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router';
-import UserContext from '../context/UserContext';
+import FoodsContext from '../context/FoodsContext';
 
 function Login() {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [enabled, setEnabled] = useState(true);
-  const { setUser } = useContext(UserContext);
+  const { setUser } = useContext(FoodsContext);
 
   const validateEmail = (verify) => {
     const regex = /\S+@\S+\.\S+/;

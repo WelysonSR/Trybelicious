@@ -4,18 +4,21 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './components/Login';
 import Foods from './components/Foods';
-import UserProvider from './context/UserProvider';
+import FoodsProvider from './context/FoodsProvider';
+import DrinksProvider from './context/DrinksProvider';
 
 function App() {
   return (
-    <UserProvider>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={ Login } />
-          <Route exact path="/foods" component={ Foods } />
-        </Switch>
-      </BrowserRouter>
-    </UserProvider>
+    <FoodsProvider>
+      <DrinksProvider>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={ Login } />
+            <Route exact path="/foods" component={ Foods } />
+          </Switch>
+        </BrowserRouter>
+      </DrinksProvider>
+    </FoodsProvider>
   );
 }
 
