@@ -34,20 +34,21 @@ function Header({ img1, title, img2 }) {
   };
 
   return (
-    <header>
-      <section className="header-container">
-        <Link to="/profile">
-          <img data-testid="profile-top-btn" src={ img1 } alt="profile" />
-        </Link>
-        <h1 data-testid="page-title">{title}</h1>
-        {
-          img2 && (
-            <button type="button" onClick={ () => setIsOpen(!isOpen) }>
-              <img data-testid="search-top-btn" src={ img2 } alt="search" />
-            </button>
-          )
-        }
-      </section>
+    <>
+      <header>
+        <section className="header-container">
+          <Link to="/profile">
+            <img data-testid="profile-top-btn" src={ img1 } alt="profile" />
+          </Link>
+          <h1 data-testid="page-title">{title}</h1>
+          {
+            img2 && (
+              <button type="button" onClick={ () => setIsOpen(!isOpen) }>
+                <img data-testid="search-top-btn" src={ img2 } alt="search" />
+              </button>
+            )
+          }
+        </section>
       {
         isOpen && (
           <form className="open" onSubmit={ handleSubmit }>
@@ -108,6 +109,7 @@ function Header({ img1, title, img2 }) {
         )
       }
     </header>
+    </>
   );
 }
 
