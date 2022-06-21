@@ -1,11 +1,11 @@
 const INITIAL_STATE = {
-  foods: '',
+  meals: [],
 };
 
 function foodsReducer(state = INITIAL_STATE, action) {
-  switch ('#') {
-  case 'FOODS-REDUX':
-    return { ...state, foods: action };
+  switch (action.type) {
+  case 'SAVE_INGREDIENT':
+    return { ...state, meals: action };
   default:
     return state;
   }

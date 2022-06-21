@@ -8,24 +8,25 @@ describe('Testes da página de Login', () => {
   test('Se os inputs de email e senha e o botão estão sendo renderizados', () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
-    const inputs = screen.getAllByRole('textbox');
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
     const enterButton = screen.getByRole('button', { name: 'Enter' });
 
     expect(enterButton).toBeDisabled();
-    expect(inputs[0]).toBeinTheDocument();
-    expect(inputs[1]).toBeinTheDocument();
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
 
-    userEvent.type(inputs[0], 'email@email.com');
-    userEvent.type(inputs[1], '123456');
+    userEvent.type(emailInput, 'email@email.com');
+    userEvent.type(passwordInput, '1234567');
 
-    expect(inputs[0]).toHaveValue('email@email.com');
-    expect(inputs[1]).toHaveValue('123456');
+    expect(emailInput).toHaveValue('email@email.com');
+    expect(passwordInput).toHaveValue('1234567');
     expect(enterButton).toBeEnabled();
 
     userEvent.click(enterButton);
 
-    const title = screen.getByRole('heading', { name: /foods/i });
-    expect(title).toBeinTheDocument();
+    const title = screen.getByRole('heading', { name: 'Foods' });
+    expect(title).toBeInTheDocument();
 
     const { location } = history;
     expect(location.pathname).toBe('/foods');
