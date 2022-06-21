@@ -16,16 +16,16 @@ function Header({ img1, title, img2 }) {
     const NUMBER = 1;
     switch (choice) {
     case 'Ingredient':
-      dispatch(fetchIngredient(search));
+      dispatch(fetchIngredient(search, title));
       break;
     case 'Name':
-      dispatch(fetchName(search));
+      dispatch(fetchName(search, title));
       break;
     case 'First Letter':
       if (search.length > NUMBER) {
         global.alert('Your search must have only 1 (one) character');
       } else {
-        dispatch(fetchFirstLetter(search));
+        dispatch(fetchFirstLetter(search, title));
       }
       break;
     default:
