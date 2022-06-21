@@ -60,7 +60,7 @@ function Header({ img1, title, img2 }) {
               </label>
             </section>
 
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn" variant="primary">
               Search
             </button>
           </form>
