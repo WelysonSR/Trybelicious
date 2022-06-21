@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import FoodsContext from '../context/FoodsContext';
+import { saveEmail } from '../redux/actions';
 
 function Login() {
   const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [enabled, setEnabled] = useState(true);
-  const { setUser } = useContext(FoodsContext);
+  const dispatch = useDispatch();
 
   const validateEmail = (verify) => {
     const regex = /\S+@\S+\.\S+/;
@@ -27,7 +28,7 @@ function Login() {
     localStorage.setItem('mealsToken', 1);
     localStorage.setItem('cocktailsToken', 1);
     localStorage.setItem('user', JSON.stringify({ email }));
-    setUser(email);
+    dispatch(saveEmail(email));
     history.push('/foods');
   };
 
