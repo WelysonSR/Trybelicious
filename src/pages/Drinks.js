@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Card from '../components/Card';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import Profile from '../images/profileIcon.svg';
 import Search from '../images/searchIcon.svg';
 import './All.css';
@@ -41,6 +42,7 @@ function Drinks() {
           ))
         }
       </main>
+      <Footer />
     </>
   );
 }
