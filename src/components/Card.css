@@ -1,0 +1,10 @@
+/* stylelint-disable linebreaks */
+.card {
+  border-radius: 6px;
+  margin-top: 10px;
+  width: 175px;
+}
+
+.card-img {
+  width: 100%;
+}

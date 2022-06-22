@@ -1,0 +1,6 @@
+/* stylelint-disable linebreaks */
+.cardAll {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}

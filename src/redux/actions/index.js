@@ -22,14 +22,12 @@ export const fetchIngredient = (param, title) => async (dispatch) => {
     const ingredientFoods = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${param}`;
     const response = await fetch(ingredientFoods);
     const { meals } = await response.json();
-    console.log(meals);
     dispatch(saveIngredient(meals));
   } else {
     const ingredientDrinks = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${param}`;
     const response = await fetch(ingredientDrinks);
-    const { cocktails } = await response.json();
-    console.log(cocktails);
-    dispatch(saveDrinks(cocktails));
+    const { drinks } = await response.json();
+    dispatch(saveDrinks(drinks));
   }
 };
 
@@ -40,8 +38,8 @@ export const fetchName = (param, title) => async (dispatch) => {
     dispatch(saveIngredient(meals));
   } else {
     const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${param}`);
-    const { cocktails } = await response.json();
-    dispatch(saveDrinks(cocktails));
+    const { drinks } = await response.json();
+    dispatch(saveDrinks(drinks));
   }
 };
 
@@ -52,7 +50,7 @@ export const fetchFirstLetter = (param, title) => async (dispatch) => {
     dispatch(saveIngredient(meals));
   } else {
     const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${param}`);
-    const { cocktails } = await response.json();
-    dispatch(saveDrinks(cocktails));
+    const { drinks } = await response.json();
+    dispatch(saveDrinks(drinks));
   }
 };
