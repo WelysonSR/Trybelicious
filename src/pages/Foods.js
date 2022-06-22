@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Card from '../components/Card';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
 import Search from '../images/searchIcon.svg';
@@ -42,6 +43,7 @@ function Foods() {
           ))
         }
       </main>
+      <Footer />
     </>
   );
 }
