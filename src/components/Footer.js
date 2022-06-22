@@ -9,7 +9,7 @@ function Footer() {
       </Link>
 
       <Link to="/explore">
-        <button type="button" data-testid="explore-bottom-btn">Profile</button>
+        <button type="button" data-testid="explore-bottom-btn">Explore</button>
       </Link>
 
       <Link to="/foods">
