@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 function foodsReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
   case SAVE_INGREDIENT:
-    return { ...state, meals: action };
+    return { ...state, meals: action.action };
   default:
     return state;
   }

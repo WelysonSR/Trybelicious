@@ -1,11 +1,13 @@
+import { SAVE_DRINKS } from '../actions';
+
 const INITIAL_STATE = {
-  drinks: '',
+  drinks: [],
 };
 
 function drinksReducer(state = INITIAL_STATE, action) {
-  switch ('#') {
-  case 'DRINKS-REDUX':
-    return { ...state, drinks: action };
+  switch (action.type) {
+  case SAVE_DRINKS:
+    return { ...state, drinks: action.action };
   default:
     return state;
   }
