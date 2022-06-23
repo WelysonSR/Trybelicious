@@ -51,12 +51,11 @@ function App() {
         path="/foods/:id-da-receita/in-progress"
         component={ Progress }
       />
-      <Route exact path="/drinks/:id-da-receita" component={ DetailsDrinks } />
-      <Route exact path="/foods/:id-da-receita" component={ DetailsFoods } />
+      <Route path="/drinks/:id" component={ DetailsDrinks } />
+      <Route path="/foods/:id" component={ DetailsFoods } />
       <Route exact path="/drinks" component={ Drinks } />
       <Route exact path="/foods" component={ Foods } />
       <Route exact path="/" component={ Login } />
-      <Route exact path="/foods/:id-da-receita" component={ DetailsFoods } />
     </Switch>
   );
 }

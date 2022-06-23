@@ -39,7 +39,7 @@ function Foods() {
               title={ card.strMeal }
               index={ i }
               id={ card.idMeal }
-              type="food"
+              type="foods"
             />
           ))
         }

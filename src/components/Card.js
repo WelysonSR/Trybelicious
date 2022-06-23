@@ -6,7 +6,7 @@ import './Card.css';
 function Card({ index, img, title, id, type }) {
   return (
     <div data-testid={ `${index}-recipe-card` } className="card">
-      <Link to={ `${type}s/${id}` }>
+      <Link to={ `${type}/${id}` }>
         <img
           className="card-img"
           data-testid={ `${index}-card-img` }
