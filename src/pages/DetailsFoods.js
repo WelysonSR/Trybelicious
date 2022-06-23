@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import Recommended from '../components/Recomended';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+// import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function DetailsFoods() {
   const history = useHistory();
@@ -10,6 +11,7 @@ function DetailsFoods() {
   const index = pathname.pathname.split('/')[2];
 
   const [recipe, setRecipe] = useState([]);
+  const [isFav, setFav] = useState(false);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -53,7 +55,7 @@ function DetailsFoods() {
         </iframe> */
       }
       <Recommended type="foods" />
-      <button data-testid="start-recipe-btn" type="button">Iniciar Receita</button>
+      <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
     </div>
   );
 }
