@@ -42,7 +42,11 @@ function Header({ img1, title, img2 }) {
         <h1 data-testid="page-title">{title}</h1>
         {
           img2 && (
-            <button type="button" onClick={ () => setIsOpen(!isOpen) }>
+            <button
+              type="button"
+              onClick={ () => setIsOpen(!isOpen) }
+              className="searchBtn"
+            >
               <img data-testid="search-top-btn" src={ img2 } alt="search" />
             </button>
           )
