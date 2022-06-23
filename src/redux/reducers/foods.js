@@ -2,6 +2,7 @@ import { SAVE_INGREDIENT } from '../actions';
 
 const INITIAL_STATE = {
   meals: [],
+  doneRecipes: [],
 };
 
 function foodsReducer(state = INITIAL_STATE, action) {
