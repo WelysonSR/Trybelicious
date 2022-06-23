@@ -37,6 +37,8 @@ function Drinks() {
               title={ card.strDrink }
               img={ card.strDrinkThumb }
               index={ i }
+              id={ card.idDrink }
+              type="drink"
             />
           ))
         }
