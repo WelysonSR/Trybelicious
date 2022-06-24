@@ -8,6 +8,11 @@
   padding: 0.5rem 1rem;
 }
 
+.searchBtn {
+  background: none;
+  border: none;
+}
+
 .open {
   display: flex;
   flex-wrap: wrap;

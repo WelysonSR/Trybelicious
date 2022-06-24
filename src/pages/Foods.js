@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import Card from '../components/Card';
 import CategoriesButtons from '../components/CategoriesButtons';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
 import Search from '../images/searchIcon.svg';
@@ -113,6 +114,7 @@ function Foods() {
           ))
         }
       </main>
+      <Footer />
     </>
   );
 }

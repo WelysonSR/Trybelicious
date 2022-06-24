@@ -1,74 +1,25 @@
-// import React, { useEffect, useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import Header from '../components/Header';
-// import Profile from '../images/profileIcon.svg';
-// import Card from '../components/Card';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import Profile from '../images/profileIcon.svg';
 
+function Explore() {
+  return (
+    <div>
+      <Header img1={ Profile } title="Explore" />
 
-// function Explore() {
-//   const globalRecipes = useSelector((state) => state.allRecipes);
-//   const [recipes, setRecipes] = useState([]);
-//   const [recipeType, setRecipeType] = useState('');
-//   const dispatch = useDispatch();
+      <Link to="/explore/foods">
+        <button type="button" data-testid="explore-foods">Explore Foods</button>
+      </Link>
 
-//   const chooseRecipeType = (type) => {
-//     setRecipeType(type);
-//     dispatch(fetchAllRecipes(type));
-//   };
+      <Link to="/explore/drinks">
+        <button type="button" data-testid="explore-drinks">Explore Drinks</button>
+      </Link>
 
-//   useEffect(() => {
-//     // const limit = 11;
-//     // const limitedRecipes = globalRecipes.filter((_recipes, index) => index <= limit);
-//     setRecipes(globalRecipes);
-//     console.log(globalRecipes);
-//   }, [globalRecipes, recipes]);
+      <Footer />
+    </div>
+  );
+}
 
-//   return (
-//     <div>
-//       <Header img1={ Profile } title="Explore" />
-//       <button
-//         type="submit"
-//         onClick={ () => chooseRecipeType('foods') }
-//       >
-//         Explore Foods
-//       </button>
-//       <button
-//         type="submit"
-//         onClick={ () => chooseRecipeType('drinks') }
-//       >
-//         Explore Drinks
-//       </button>
-//       {/* {
-//         recipeType === 'foods' && (
-//           <section>
-//             {recipes.map((recipe, index) => (
-//               <Card
-//                 key={ recipe.idMeal }
-//                 img={ recipe.strMealThumb }
-//                 title={ recipe.strMeal }
-//                 index={ index }
-//               />
-//             ))}
-//           </section>
-//         )
-//       }
-//       {
-//         recipeType === 'drinks' && (
-//           <section>
-//             {recipes.map((recipe, index) => (
-//               <Card
-//                 key={ recipe.idDrink }
-//                 title={ recipe.strDrink }
-//                 img={ recipe.strDrinkThumb }
-//                 index={ index }
-//               />
-//             ))}
-//           </section>
-//         )
-//       } */}
-
-//     </div>
-//   );
-// }
-
-// export default Explore;
+export default Explore;

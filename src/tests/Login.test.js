@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
 
-describe('Testes da página de Login', () => {
+describe('Testes da página Login', () => {
   test('Se os inputs de email e senha e o botão estão sendo renderizados', () => {
     const { history } = renderWithRouterAndRedux(<App />);
 
