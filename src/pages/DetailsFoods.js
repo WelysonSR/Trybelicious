@@ -6,6 +6,8 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 // import blackHeartIcon from '../images/blackHeartIcon.svg';
 import './DetailsFoods.css';
 
+// oi
+
 function DetailsFoods() {
   const history = useHistory();
   const pathname = history.location;
