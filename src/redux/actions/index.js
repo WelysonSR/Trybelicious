@@ -1,6 +1,7 @@
 export const EMAIL_REDUX = 'EMAIL-REDUX';
 export const SAVE_INGREDIENT = 'SAVE_INGREDIENT';
 export const SAVE_DRINKS = 'SAVE_DRINKS';
+export const SAVE_FAVORIT = 'SAVE_FAVORIT';
 
 export const saveEmail = (action) => ({
   type: EMAIL_REDUX,
@@ -14,6 +15,11 @@ export const saveIngredient = (action) => ({
 
 export const saveDrinks = (action) => ({
   type: SAVE_DRINKS,
+  action,
+});
+
+export const saveFavorit = (action) => ({
+  type: SAVE_FAVORIT,
   action,
 });
 
