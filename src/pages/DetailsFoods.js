@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router';
 import Recommended from '../components/Recomended';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-// import blackHeartIcon from '../images/blackHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 import './DetailsFoods.css';
-
-// oi
 
 function DetailsFoods() {
   const history = useHistory();
@@ -14,6 +12,11 @@ function DetailsFoods() {
   const index = pathname.pathname.split('/')[2];
 
   const [recipe, setRecipe] = useState();
+  const [isFav, setIsFav] = useState(true);
+
+  const handleFavorite = useCallback(() => {
+    setIsFav(!isFav);
+  }, [isFav]);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -24,6 +27,10 @@ function DetailsFoods() {
     };
     getRecipe();
   }, [index]);
+
+  const handleToProgress = () => {
+    history.push(`/foods/${index}/in-progress`);
+  };
 
   return (
     <div>
@@ -37,11 +44,19 @@ function DetailsFoods() {
               className="details-img"
             />
             <h1 data-testid="recipe-title">{ recipe.strMeal }</h1>
-            <button data-testid="share-btn" type="button">
-              <img src={ shareIcon } alt="share-icon" />
+            <button
+              data-testid="share-btn"
+              type="button"
+            >
+              <img src={ shareIcon } alt="favorite-icon" />
             </button>
-            <button data-testid="favorite-btn" type="button">
-              <img src={ whiteHeartIcon } alt="favorite-icon" />
+            <button
+              data-testid="favorite-btn"
+              type="button"
+              id="favorite-btn"
+              onClick={ handleFavorite }
+            >
+              <img src={ isFav ? whiteHeartIcon : blackHeartIcon } alt="favorite-icon" />
             </button>
             <p data-testid="recipe-category">{ recipe.strCategory }</p>
             <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredientes</h3>
@@ -64,7 +79,13 @@ function DetailsFoods() {
               frameBorder="0"
             />
             <Recommended type="foods" api="Drink" />
-            <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
+            <button
+              data-testid="start-recipe-btn"
+              type="button"
+              onClick={ handleToProgress }
+            >
+              Start Recipe
+            </button>
           </div>
         )
       }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router';
 import Recommended from '../components/Recomended';
 import shareIcon from '../images/shareIcon.svg';
@@ -10,6 +10,11 @@ function DetailsDrinks() {
   const index = pathname.pathname.split('/')[2];
 
   const [recipe, setRecipe] = useState([]);
+  const [isFav, setIsFav] = useState(true);
+
+  const handleFavorite = useCallback(() => {
+    setIsFav(!isFav);
+  }, [isFav]);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -21,7 +26,10 @@ function DetailsDrinks() {
     getRecipe();
   }, []);
 
-  console.log(recipe);
+  const handleToProgress = () => {
+    history.push(`/drinks/${index}/in-progress`);
+  };
+
   return (
     <div>
       <img data-testid="recipe-photo" src={ recipe.strDrinkThumb } alt="imagem-receita" />
@@ -29,8 +37,8 @@ function DetailsDrinks() {
       <button data-testid="share-btn" type="button">
         <img src={ shareIcon } alt="share-icon" />
       </button>
-      <button data-testid="favorite-btn" type="button">
-        <img src={ whiteHeartIcon } alt="favorite-icon" />
+      <button data-testid="favorite-btn" type="button" onClick={ handleFavorite }>
+        <img src={ isFav ? whiteHeartIcon : blackHeartIcon } alt="favorite-icon" />
       </button>
       <p data-testid="recipe-category">
         { `${recipe.strCategory} / ${recipe.strAlcoholic}` }
@@ -47,7 +55,13 @@ function DetailsDrinks() {
       <h3 data-testid="instructions">Instruções</h3>
       <p data-testid="instructions">{ recipe.strInstructions }</p>
       <Recommended type="drinks" api="Meal" />
-      <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
+      <button
+        data-testid="start-recipe-btn"
+        type="button"
+        onClick={ handleToProgress }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
