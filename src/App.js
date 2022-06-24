@@ -41,16 +41,16 @@ function App() {
       <Route exact path="/explore" component={ Explore } />
       <Route
         exact
-        path="/drinks/:id-da-receita/in-progress"
+        path="/drinks/:id/in-progress"
         component={ Progress }
       />
       <Route
         exact
-        path="/foods/:id-da-receita/in-progress"
+        path="/foods/:id/in-progress"
         component={ Progress }
       />
-      <Route exact path="/drinks/:id-da-receita" component={ Drinks } />
-      <Route exact path="/foods/:id-da-receita" component={ Foods } />
+      <Route exact path="/drinks/:id" component={ Drinks } />
+      <Route exact path="/foods/:id" component={ Foods } />
       <Route exact path="/drinks" component={ Drinks } />
       <Route exact path="/foods" component={ Foods } />
       <Route exact path="/" component={ Login } />

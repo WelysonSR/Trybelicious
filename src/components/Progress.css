@@ -1,0 +1,7 @@
+.through {
+  text-decoration: line-through;
+}
+
+.ingredient__list {
+  display: flex;
+}
