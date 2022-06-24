@@ -97,6 +97,8 @@ function Foods() {
                 img={ recipe.strMealThumb }
                 title={ recipe.strMeal }
                 index={ i }
+                id={ card.idMeal }
+                type="foods"
               />
             </Link>
           ))
@@ -109,6 +111,8 @@ function Foods() {
                 img={ card.strMealThumb }
                 title={ card.strMeal }
                 index={ i }
+                id={ card.idMeal }
+                type="foods"
               />
             </Link>
           ))
