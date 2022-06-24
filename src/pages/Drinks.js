@@ -53,7 +53,7 @@ function Drinks() {
       const newDrinks = drinks.filter((_meal, i) => i <= AMOUNT);
       setCocktails(newDrinks);
     }
-  }, [drinks]);
+  }, [drinks, history]);
 
   const fecthFilterByCategory = async (value) => {
     const response = await

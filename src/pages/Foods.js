@@ -54,7 +54,7 @@ function Foods() {
       const newMeals = meals.filter((_meal, i) => (i <= AMOUNT));
       setMeals(newMeals);
     }
-  }, [meals]);
+  }, [meals, history]);
 
   const fecthFilterByCategory = async (value) => {
     const response = await
