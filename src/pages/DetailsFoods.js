@@ -4,14 +4,15 @@ import Recommended from '../components/Recomended';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 // import blackHeartIcon from '../images/blackHeartIcon.svg';
+import './DetailsFoods.css';
 
 function DetailsFoods() {
   const history = useHistory();
   const pathname = history.location;
   const index = pathname.pathname.split('/')[2];
 
-  const [recipe, setRecipe] = useState([]);
-  const [isFav, setFav] = useState(false);
+  const [recipe, setRecipe] = useState();
+  // const [isFav, setFav] = useState(false);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -21,41 +22,51 @@ function DetailsFoods() {
       setRecipe(data.meals[0]);
     };
     getRecipe();
-  }, []);
+  }, [index]);
 
   return (
     <div>
-      <img data-testid="recipe-photo" src={ recipe.strMealThumb } alt="imagem-receita" />
-      <h1 data-testid="recipe-title">{ recipe.strMeal }</h1>
-      <button data-testid="share-btn" type="button">
-        <img src={ shareIcon } alt="share-icon" />
-      </button>
-      <button data-testid="favorite-btn" type="button">
-        <img src={ whiteHeartIcon } alt="favorite-icon" />
-      </button>
-      <p data-testid="recipe-category">{ recipe.strCategory }</p>
-      <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredientes</h3>
-      <ul>
-        {
-          Object.entries(recipe)
-            .filter((item) => item[0].includes('strIngredient'))
-            .map((itens, i) => <li key={ i }>{ itens[1] }</li>)
-            .filter((e) => e.props.children !== '')
-        }
-      </ul>
-      <h3 data-testid="instructions">Instruções</h3>
-      <p data-testid="instructions">{ recipe.strInstructions }</p>
-      { /*
-        <iframe
-          data-testid="video"
-          src={`https://www.youtube.com/embed/${embed}`}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen>
-        </iframe> */
+      {
+        recipe && (
+          <div>
+            <img
+              data-testid="recipe-photo"
+              src={ recipe.strMealThumb }
+              alt="imagem-receita"
+              className="details-img"
+            />
+            <h1 data-testid="recipe-title">{ recipe.strMeal }</h1>
+            <button data-testid="share-btn" type="button">
+              <img src={ shareIcon } alt="share-icon" />
+            </button>
+            <button data-testid="favorite-btn" type="button">
+              <img src={ whiteHeartIcon } alt="favorite-icon" />
+            </button>
+            <p data-testid="recipe-category">{ recipe.strCategory }</p>
+            <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredientes</h3>
+            <ul>
+              {
+                Object.entries(recipe)
+                  .filter((item) => item[0].includes('strIngredient'))
+                  .map((itens, i) => <li key={ i }>{ itens[1] }</li>)
+                  .filter((e) => e.props.children !== '')
+              }
+            </ul>
+            <h3 data-testid="instructions">Instruções</h3>
+            <p data-testid="instructions">{ recipe.strInstructions }</p>
+            <iframe
+              data-testid="video"
+              width="100%"
+              height="210"
+              src={ recipe.strYoutube.replace('watch?v=', 'embed/') }
+              title="YouTube video player"
+              frameBorder="0"
+            />
+            <Recommended type="foods" />
+            <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
+          </div>
+        )
       }
-      <Recommended type="foods" />
-      <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
     </div>
   );
 }

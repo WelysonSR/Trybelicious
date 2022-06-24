@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Carousel from 'react-bootstrap/Carousel';
 
 function Recommended({ type }) {
   const [recommendation, setRecomendation] = useState([]);
+  const [itens, setItens] = useState();
 
   useEffect(() => {
     if (type === 'foods') {
@@ -22,30 +24,37 @@ function Recommended({ type }) {
       };
       getDrinkRecommendation();
     }
-  }, []);
+  }, [type]);
 
-  const maxLength = 6;
-  const itens = recommendation.filter((rec, i) => i < maxLength);
+  useEffect(() => {
+    const maxLength = 6;
+    const itensMax = recommendation.filter((_rec, i) => i < maxLength);
+    setItens(itensMax);
+  }, [recommendation]);
+
   console.log(itens);
 
   return (
-    <div className="carousel">
+    <Carousel>
       {
-        itens.map((food, index) => (
-          <div
+        itens && itens.map((food, index) => (
+          <Carousel.Item
             key={ index }
             data-testid={ `${index}-recomendation-card` }
           >
             <img
-              src={ food.strMealThumb }
-              alt={ food.strMeal }
+              className="d-block w-100"
+              src={ food.strDrinkThumb }
+              alt={ food.strDrink }
             />
-            <p>{ food.strAlcoholic }</p>
-            <h2 data-testid={ `${index}-recomendation-title` }>{food.strMeal}</h2>
-          </div>
+            <Carousel.Caption className="text-colo">
+              <p>{ food.strAlcoholic }</p>
+              <h2 data-testid={ `${index}-recomendation-title` }>{food.strDrink}</h2>
+            </Carousel.Caption>
+          </Carousel.Item>
         ))
       }
-    </div>
+    </Carousel>
   );
 }
 
