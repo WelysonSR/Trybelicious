@@ -36,8 +36,6 @@ function Progress() {
     setItemChecked(newItemChecked);
   }, [itemChecked]);
 
-  console.log(itemChecked);
-
   return (
     <div>
       {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Card from '../components/Card';
 import CategoriesButtons from '../components/CategoriesButtons';
 import Footer from '../components/Footer';
@@ -76,8 +76,6 @@ function Foods() {
     }
   };
 
-  console.log(allRecipes);
-
   return (
     <>
       <Header img1={ Profile } title="Foods" img2={ Search } />
@@ -91,30 +89,26 @@ function Foods() {
       <main className="cardAll">
         {
           meal.length === 0 && allRecipes.map((recipe, i) => (
-            <Link key={ recipe.idMeal } to={ `/foods/${recipe.idMeal}` }>
-              <Card
-                key={ recipe.idMeal }
-                img={ recipe.strMealThumb }
-                title={ recipe.strMeal }
-                index={ i }
-                id={ card.idMeal }
-                type="foods"
-              />
-            </Link>
+            <Card
+              key={ recipe.idMeal }
+              img={ recipe.strMealThumb }
+              title={ recipe.strMeal }
+              index={ i }
+              id={ recipe.idMeal }
+              type="foods"
+            />
           ))
         }
         {
           meal.length > 0 && meal.map((card, i) => (
-            <Link key={ card.idMeal } to={ `/foods/${card.idMeal}` }>
-              <Card
-                key={ card.idMeal }
-                img={ card.strMealThumb }
-                title={ card.strMeal }
-                index={ i }
-                id={ card.idMeal }
-                type="foods"
-              />
-            </Link>
+            <Card
+              key={ card.idMeal }
+              img={ card.strMealThumb }
+              title={ card.strMeal }
+              index={ i }
+              id={ card.idMeal }
+              type="foods"
+            />
           ))
         }
       </main>

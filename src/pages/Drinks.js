@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Card from '../components/Card';
 import CategoriesButtons from '../components/CategoriesButtons';
 import Header from '../components/Header';
@@ -88,28 +88,26 @@ function Drinks() {
       <main className="cardAll">
         {
           cocktails.length === 0 && allRecipes.map((recipe, i) => (
-            <Link key={ recipe.idDrink } to={ `/drinks/${recipe.idDrink}` }>
-              <Card
-                key={ recipe.idDrink }
-                title={ recipe.strDrink }
-                img={ recipe.strDrinkThumb }
-                index={ i }
-              />
-            </Link>
+            <Card
+              key={ recipe.idDrink }
+              title={ recipe.strDrink }
+              img={ recipe.strDrinkThumb }
+              index={ i }
+              id={ recipe.idDrink }
+              type="drinks"
+            />
           ))
         }
         {
           cocktails.length > 0 && cocktails.map((card, i) => (
-            <Link key={ card.idDrink } to={ `/drinks/${card.idDrink}` }>
-              <Card
-                key={ card.idDrink }
-                title={ card.strDrink }
-                img={ card.strDrinkThumb }
-                index={ i }
-                id={ card.idDrink }
-                type="drinks"
-              />
-            </Link>
+            <Card
+              key={ card.idDrink }
+              title={ card.strDrink }
+              img={ card.strDrinkThumb }
+              index={ i }
+              id={ card.idDrink }
+              type="drinks"
+            />
           ))
         }
       </main>
