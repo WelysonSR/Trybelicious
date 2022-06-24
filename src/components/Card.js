@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import './Card.css';
 
-function Card({ index, img, title, id, type }) {
+function Card({ index, img, title, id }) {
   return (
     <div data-testid={ `${index}-recipe-card` } className="card">
-      <Link to={ `${type}/${id}` }>
+      <Link to={ `${id}` }>
         <img
           className="card-img"
           data-testid={ `${index}-card-img` }

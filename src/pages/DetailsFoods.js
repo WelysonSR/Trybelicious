@@ -12,7 +12,6 @@ function DetailsFoods() {
   const index = pathname.pathname.split('/')[2];
 
   const [recipe, setRecipe] = useState();
-  // const [isFav, setFav] = useState(false);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -62,7 +61,7 @@ function DetailsFoods() {
               title="YouTube video player"
               frameBorder="0"
             />
-            <Recommended type="foods" />
+            <Recommended type="foods" api="Drink" />
             <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
           </div>
         )

@@ -46,7 +46,7 @@ function DetailsDrinks() {
       </ul>
       <h3 data-testid="instructions">Instruções</h3>
       <p data-testid="instructions">{ recipe.strInstructions }</p>
-      <Recommended type="drinks" />
+      <Recommended type="drinks" api="Meal" />
       <button data-testid="start-recipe-btn" type="button">Start Recipe</button>
     </div>
   );

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 
-function Recommended({ type }) {
+function Recommended({ type, api }) {
   const [recommendation, setRecomendation] = useState([]);
   const [itens, setItens] = useState();
+  const Thumb = `str${api}Thumb`;
+  const Name = `str${api}`;
 
   useEffect(() => {
     if (type === 'foods') {
@@ -32,8 +34,6 @@ function Recommended({ type }) {
     setItens(itensMax);
   }, [recommendation]);
 
-  console.log(itens);
-
   return (
     <Carousel>
       {
@@ -44,12 +44,14 @@ function Recommended({ type }) {
           >
             <img
               className="d-block w-100"
-              src={ food.strDrinkThumb }
-              alt={ food.strDrink }
+              src={ food[Thumb] }
+              alt={ food[Name] }
             />
             <Carousel.Caption className="text-colo">
               <p>{ food.strAlcoholic }</p>
-              <h2 data-testid={ `${index}-recomendation-title` }>{food.strDrink}</h2>
+              <h2 data-testid={ `${index}-recomendation-title` }>
+                { food[Name] }
+              </h2>
             </Carousel.Caption>
           </Carousel.Item>
         ))
@@ -60,6 +62,7 @@ function Recommended({ type }) {
 
 Recommended.propTypes = {
   type: PropTypes.string.isRequired,
+  api: PropTypes.string.isRequired,
 };
 
 export default Recommended;
