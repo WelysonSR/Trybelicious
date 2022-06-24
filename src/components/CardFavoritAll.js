@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import './CardFavoritAll.css';
 import { saveFavorit } from '../redux/actions';
+import './CardFavoritAll.css';
 
 function CardFavoritAll({ favofit, index }) {
   const [tooltip, setTooltip] = useState(false);
