@@ -1,0 +1,8 @@
+/* stylelint-disable linebreaks */
+.footer-container {
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+}
