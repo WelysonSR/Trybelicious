@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Carousel from 'react-bootstrap/Carousel';
+import './Slider.css';
 
 function Recommended({ type, api }) {
   const [recommendation, setRecomendation] = useState([]);
@@ -35,28 +35,30 @@ function Recommended({ type, api }) {
   }, [recommendation]);
 
   return (
-    <Carousel>
-      {
-        itens && itens.map((food, index) => (
-          <Carousel.Item
-            key={ index }
-            data-testid={ `${index}-recomendation-card` }
-          >
-            <img
-              className="d-block w-100"
-              src={ food[Thumb] }
-              alt={ food[Name] }
-            />
-            <Carousel.Caption className="text-colo">
+    <>
+      <h3>Recommended</h3>
+      <section className="recipeContainer">
+        {
+          itens && itens.map((food, index) => (
+            <div
+              className="recipeCard"
+              key={ index }
+              data-testid={ `${index}-recomendation-card` }
+            >
+              <img
+                className="tamanho-right"
+                src={ food[Thumb] }
+                alt={ food[Name] }
+              />
               <p>{ food.strAlcoholic }</p>
               <h2 data-testid={ `${index}-recomendation-title` }>
                 { food[Name] }
               </h2>
-            </Carousel.Caption>
-          </Carousel.Item>
-        ))
-      }
-    </Carousel>
+            </div>
+          ))
+        }
+      </section>
+    </>
   );
 }
 

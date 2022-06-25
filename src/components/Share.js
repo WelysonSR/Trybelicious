@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
 
 export default function Share({ type, id }) {
+  const [message, setMessage] = useState(false);
   const copyUrl = () => {
+    setMessage(true);
     const mainURL = window.location.origin;
-    navigator.clipboard.writeText(`${mainURL}/${type}s/${id}`);
+    navigator.clipboard.writeText(`${mainURL}/${type}/${id}`);
   };
-  console.log(type, id);
+
+  useEffect(() => {
+    const NUMBER = 1000;
+    setTimeout(() => {
+      setMessage(false);
+    }, NUMBER);
+  }, [message]);
+
   return (
     <div>
+      {
+        message && <p>Link copied!</p>
+      }
       <button
         type="button"
         data-testid="share-btn"
