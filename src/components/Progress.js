@@ -8,6 +8,7 @@ import './Progress.css';
 
 function Progress() {
   const [recipe, setRecipe] = useState([]);
+  const [foodOrDrink, setFoodOrDrink] = useState('');
   const { id } = useParams();
 
   const history = useHistory();
@@ -17,11 +18,13 @@ function Progress() {
   useEffect(() => {
     const getRecipe = async () => {
       if (type === 'foods') {
+        setFoodOrDrink('foods');
         const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
         const response = await fetch(url);
         const data = await response.json();
         setRecipe(data.meals[0]);
       } else if (type === 'drinks') {
+        setFoodOrDrink('drinks');
         const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
         const response = await fetch(url);
         const data = await response.json();
@@ -58,7 +61,7 @@ function Progress() {
                   recipe.strCategory
                 }
               </h2>
-              <Share />
+              <Share type={ foodOrDrink } id={ id } />
               <Favorite />
             </div>
             <div>
