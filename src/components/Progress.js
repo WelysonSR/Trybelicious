@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import Footer from './Footer';
 import Favorite from './Favorite';
 import Share from './Share';
 import ingredientFilterList from '../helpers/IngredientFilter';
@@ -9,21 +8,28 @@ import './Progress.css';
 
 function Progress() {
   const [recipe, setRecipe] = useState([]);
-  const data = useSelector((state) => state);
-  const { foods, drinks } = data;
-  const { meals } = foods;
-  const drinksData = drinks.drinks;
   const { id } = useParams();
 
+  const history = useHistory();
+  const pathname = history.location;
+  const type = pathname.pathname.split('/')[1];
+
   useEffect(() => {
-    if (meals.length !== 0) {
-      const meal = meals.find((MEAL) => MEAL.idMeal === id);
-      setRecipe(meal);
-    } else if (drinksData.length !== 0) {
-      const drink = drinksData.find((DRINK) => DRINK.idDrink === id);
-      setRecipe(drink);
-    }
-  }, [drinksData, id, meals, recipe]);
+    const getRecipe = async () => {
+      if (type === 'foods') {
+        const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        setRecipe(data.meals[0]);
+      } else if (type === 'drinks') {
+        const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        setRecipe(data.drinks[0]);
+      }
+    };
+    getRecipe();
+  }, [id, recipe, type]);
 
   const srcImg = recipe.strDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
   const title = recipe.strDrink ? recipe.strDrink : recipe.strMeal;
@@ -58,7 +64,11 @@ function Progress() {
             <div>
               {
                 ingredients.map((ingredient, i) => (
-                  <div className="ingredient__list" key={ i }>
+                  <div
+                    data-testid={ `${i}-ingredient-step` }
+                    className="ingredient__list"
+                    key={ i }
+                  >
                     <input
                       type="checkbox"
                       id={ i }
@@ -66,7 +76,6 @@ function Progress() {
                     />
                     <p
                       className={ itemChecked[i] ? 'through' : '' }
-                      data-testid={ `${i}-ingredient-step` }
                     >
                       {ingredient}
                     </p>
@@ -75,6 +84,7 @@ function Progress() {
                         ? 'through'
                         : '' }
                     >
+                      {'   '}
                       {`${quantity[i]}`}
                     </p>
                   </div>
@@ -88,7 +98,6 @@ function Progress() {
           </div>
         )
       }
-      <Footer />
     </div>
   );
 }
