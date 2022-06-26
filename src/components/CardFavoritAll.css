@@ -1,0 +1,38 @@
+/* stylelint-disable linebreaks */
+.cardFavorit {
+  background-color: whitesmoke;
+  border-radius: 5px;
+  display: flex;
+  flex-flow: row wrap;
+  flex-wrap: wrap;
+  margin-top: 5px;
+  position: relative;
+  width: 100%;
+}
+
+.cardImg {
+  width: 140px;
+}
+
+.cardFavorit p {
+  height: 30px;
+  margin-left: 5px;
+}
+
+.shareFavorit {
+  background: none;
+  border: none;
+  bottom: 5px;
+  height: 35px;
+  left: 150px;
+  position: absolute;
+  width: 40px;
+}
+
+.heartFavorit {
+  background: none;
+  border: none;
+  bottom: 5px;
+  left: 200px;
+  position: absolute;
+}
