@@ -2,6 +2,8 @@ export const EMAIL_REDUX = 'EMAIL-REDUX';
 export const SAVE_INGREDIENT = 'SAVE_INGREDIENT';
 export const SAVE_DRINKS = 'SAVE_DRINKS';
 export const SAVE_FAVORIT = 'SAVE_FAVORIT';
+export const SAVE_FOODS_RECIPES = 'SAVE_FOODS_RECIPES';
+export const SAVE_DRINKS_RECIPES = 'SAVE_DRINKS_RECIPES';
 
 export const saveEmail = (action) => ({
   type: EMAIL_REDUX,
@@ -20,6 +22,16 @@ export const saveDrinks = (action) => ({
 
 export const saveFavorit = (action) => ({
   type: SAVE_FAVORIT,
+  action,
+});
+
+export const saveAllFoodsRecipes = (action) => ({
+  type: SAVE_FOODS_RECIPES,
+  action,
+});
+
+export const saveAllDrinksRecipes = (action) => ({
+  type: SAVE_DRINKS_RECIPES,
   action,
 });
 
@@ -59,4 +71,16 @@ export const fetchFirstLetter = (param, title) => async (dispatch) => {
     const { drinks } = await response.json();
     dispatch(saveDrinks(drinks));
   }
+};
+
+export const fetchAllFoodRecipes = () => async (dispatch) => {
+  const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+  const { meals } = await response.json();
+  dispatch(saveAllFoodsRecipes(meals));
+};
+
+export const fetchAllDrinksRecipes = () => async (dispatch) => {
+  const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+  const { cocktails } = await response.json();
+  dispatch(saveAllDrinksRecipes(cocktails));
 };
