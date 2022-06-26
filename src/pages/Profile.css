@@ -1,0 +1,23 @@
+/* stylelint-disable linebreaks */
+.profile-container {
+  font-size: small;
+  text-align: center;
+  width: 100%;
+}
+
+.user-email {
+  font-size: x-large;
+  margin-top: 30px;
+}
+
+.button-tags {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.button-width {
+  margin-top: 30px;
+  width: 50%;
+}
