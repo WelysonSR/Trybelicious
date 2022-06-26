@@ -50,6 +50,7 @@ function DetailsFoods() {
                 ingredients.map((ingredient, i) => (
                   <li
                     key={ i }
+                    data-testid={ `${i}-ingredient-name-and-measure` }
                   >
                     {/* ${!quantity[i] ? '' : <span>-</span> - ${quantity[i] || ''} } */}
                     {`${ingredient} - ${quantity[i] || ''}`}
@@ -72,6 +73,7 @@ function DetailsFoods() {
               data-testid="start-recipe-btn"
               type="button"
               onClick={ handleToProgress }
+              className="recipe"
             >
               Start Recipe
             </button>
