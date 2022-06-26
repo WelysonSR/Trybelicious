@@ -32,7 +32,7 @@ function Progress() {
       }
     };
     getRecipe();
-  }, [id, recipe, type]);
+  }, [id, type]);
 
   const srcImg = recipe.strDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
   const title = recipe.strDrink ? recipe.strDrink : recipe.strMeal;
@@ -62,7 +62,7 @@ function Progress() {
                 }
               </h2>
               <Share type={ foodOrDrink } id={ id } />
-              <Favorite />
+              <Favorite infoRecipe={ recipe } id={ id } type={ foodOrDrink } />
             </div>
             <div>
               {
@@ -88,7 +88,7 @@ function Progress() {
                         : '' }
                     >
                       {'   '}
-                      {`${quantity[i]}`}
+                      {`${quantity[i] || ''}`}
                     </p>
                   </div>
                 ))

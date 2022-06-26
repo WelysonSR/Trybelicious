@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import CardFavoritAll from '../components/CardFavoritAll';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
+import { saveFavorit } from '../redux/actions';
 
 function FavoriteRecipes() {
   const favoriteRecipes = useSelector((state) => state.foods.favoriteRecipes);
   const [favoritAll, setFavoritAll] = useState(favoriteRecipes);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getFavoritAll = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    dispatch(saveFavorit(getFavoritAll));
+  }, [dispatch]);
 
   useEffect(() => {
     localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));

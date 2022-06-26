@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import Favorite from '../components/Favorite';
 import Recommended from '../components/Recomended';
-import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import Share from '../components/Share';
+import ingredientFilterList from '../helpers/IngredientFilter';
 
 function DetailsDrinks() {
   const history = useHistory();
@@ -10,11 +11,6 @@ function DetailsDrinks() {
   const index = pathname.pathname.split('/')[2];
 
   const [recipe, setRecipe] = useState([]);
-  const [isFav, setIsFav] = useState(true);
-
-  const handleFavorite = useCallback(() => {
-    setIsFav(!isFav);
-  }, [isFav]);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -24,32 +20,35 @@ function DetailsDrinks() {
       setRecipe(data.drinks[0]);
     };
     getRecipe();
-  }, []);
+  }, [index]);
 
   const handleToProgress = () => {
     history.push(`/drinks/${index}/in-progress`);
   };
+  console.log(recipe);
+  const { ingredients, quantity } = ingredientFilterList(recipe);
 
   return (
     <div>
       <img data-testid="recipe-photo" src={ recipe.strDrinkThumb } alt="imagem-receita" />
       <h1 data-testid="recipe-title">{ recipe.strDrink }</h1>
-      <button data-testid="share-btn" type="button">
-        <img src={ shareIcon } alt="share-icon" />
-      </button>
-      <button data-testid="favorite-btn" type="button" onClick={ handleFavorite }>
-        <img src={ isFav ? whiteHeartIcon : blackHeartIcon } alt="favorite-icon" />
-      </button>
       <p data-testid="recipe-category">
         { `${recipe.strCategory} / ${recipe.strAlcoholic}` }
       </p>
-      <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredientes</h3>
+      <Share type="drinks" id={ index } />
+      <Favorite infoRecipe={ recipe } id={ index } type="drink" />
+      <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredients</h3>
       <ul>
         {
-          Object.entries(recipe)
-            .filter((item) => item[0].includes('strIngredient'))
-            .map((itens, i) => <li key={ i }>{ itens[1] }</li>)
-            .filter((e) => e.props.children !== null)
+          ingredients.map((ingredient, i) => (
+            <li
+              key={ i }
+              data-testid={ `${i}-ingredient-name-and-measure` }
+            >
+              {/* ${!quantity[i] ? '' : <span>-</span>} */}
+              {`${ingredient} - ${quantity[i] || ''}`}
+            </li>
+          ))
         }
       </ul>
       <h3 data-testid="instructions">Instruções</h3>
@@ -59,6 +58,7 @@ function DetailsDrinks() {
         data-testid="start-recipe-btn"
         type="button"
         onClick={ handleToProgress }
+        className="recipe"
       >
         Start Recipe
       </button>

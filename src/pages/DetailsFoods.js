@@ -1,22 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
+import Favorite from '../components/Favorite';
 import Recommended from '../components/Recomended';
-import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
+import Share from '../components/Share';
 import './DetailsFoods.css';
+import ingredientFilterList from '../helpers/IngredientFilter';
 
 function DetailsFoods() {
   const history = useHistory();
   const pathname = history.location;
   const index = pathname.pathname.split('/')[2];
 
-  const [recipe, setRecipe] = useState();
-  const [isFav, setIsFav] = useState(true);
-
-  const handleFavorite = useCallback(() => {
-    setIsFav(!isFav);
-  }, [isFav]);
+  const [recipe, setRecipe] = useState([]);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -32,10 +27,12 @@ function DetailsFoods() {
     history.push(`/foods/${index}/in-progress`);
   };
 
+  const { ingredients, quantity } = ingredientFilterList(recipe);
+
   return (
     <div>
       {
-        recipe && (
+        (recipe.length !== 0) && (
           <div>
             <img
               data-testid="recipe-photo"
@@ -44,28 +41,21 @@ function DetailsFoods() {
               className="details-img"
             />
             <h1 data-testid="recipe-title">{ recipe.strMeal }</h1>
-            <button
-              data-testid="share-btn"
-              type="button"
-            >
-              <img src={ shareIcon } alt="favorite-icon" />
-            </button>
-            <button
-              data-testid="favorite-btn"
-              type="button"
-              id="favorite-btn"
-              onClick={ handleFavorite }
-            >
-              <img src={ isFav ? whiteHeartIcon : blackHeartIcon } alt="favorite-icon" />
-            </button>
             <p data-testid="recipe-category">{ recipe.strCategory }</p>
+            <Share type="foods" id={ index } />
+            <Favorite infoRecipe={ recipe } id={ index } type="food" />
             <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredientes</h3>
             <ul>
               {
-                Object.entries(recipe)
-                  .filter((item) => item[0].includes('strIngredient'))
-                  .map((itens, i) => <li key={ i }>{ itens[1] }</li>)
-                  .filter((e) => e.props.children !== '')
+                ingredients.map((ingredient, i) => (
+                  <li
+                    key={ i }
+                    data-testid={ `${i}-ingredient-name-and-measure` }
+                  >
+                    {/* ${!quantity[i] ? '' : <span>-</span> - ${quantity[i] || ''} } */}
+                    {`${ingredient} - ${quantity[i] || ''}`}
+                  </li>
+                ))
               }
             </ul>
             <h3 data-testid="instructions">Instruções</h3>
@@ -83,6 +73,7 @@ function DetailsFoods() {
               data-testid="start-recipe-btn"
               type="button"
               onClick={ handleToProgress }
+              className="recipe"
             >
               Start Recipe
             </button>

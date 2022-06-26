@@ -1,0 +1,27 @@
+/* stylelint-disable linebreaks */
+.recipeContainer {
+  align-items: center;
+  display: flex;
+  gap: 5px;
+  justify-content: flex-start;
+  margin: 20px auto 70px;
+  overflow-x: auto;
+  width: 95%;
+}
+
+.recipeCard {
+  align-items: center;
+  border: 1px solid  white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.recipeCard > img {
+  height: 150px;
+  width: 150px;
+}
