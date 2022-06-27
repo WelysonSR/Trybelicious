@@ -35,6 +35,10 @@ describe('Testes da página Foods', () => {
     expect(foodTitle).toBeInTheDocument();
   });
 
+  // test('O funcionamento do fetch', () => {
+  //   const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
+  // });
+
   test('Se existe um botão de perfil, que redireciona para /profile, e renderiza uma img',
     () => {
       const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
