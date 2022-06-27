@@ -28,7 +28,7 @@ describe('Testes da página Login', () => {
     const title = screen.getByRole('heading', { name: 'Foods' });
     expect(title).toBeInTheDocument();
 
-    const { location } = history;
-    expect(location.pathname).toBe('/foods');
+    const { pathname } = history.location;
+    expect(pathname).toBe('/foods');
   });
 });
