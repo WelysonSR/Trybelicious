@@ -4,6 +4,7 @@ import Favorite from '../components/Favorite';
 import Recommended from '../components/Recomended';
 import Share from '../components/Share';
 import ingredientFilterList from '../helpers/IngredientFilter';
+import './DetailsFoods.css';
 
 function DetailsDrinks() {
   const history = useHistory();
@@ -30,7 +31,12 @@ function DetailsDrinks() {
 
   return (
     <div>
-      <img data-testid="recipe-photo" src={ recipe.strDrinkThumb } alt="imagem-receita" />
+      <img
+        data-testid="recipe-photo"
+        src={ recipe.strDrinkThumb }
+        alt="imagem-receita"
+        className="details-img"
+      />
       <h1 data-testid="recipe-title">{ recipe.strDrink }</h1>
       <p data-testid="recipe-category">
         { `${recipe.strCategory} / ${recipe.strAlcoholic}` }
