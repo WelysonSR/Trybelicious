@@ -24,7 +24,10 @@ const initialState = {
   },
 };
 
+const TEN_SECONDS = 10000;
+
 describe('Testes da página Foods', () => {
+  jest.setTimeout(TEN_SECONDS);
   test('Se a rota da página é /foods e se o título está correto', () => {
     const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
 
