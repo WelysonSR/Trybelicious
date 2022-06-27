@@ -110,7 +110,7 @@ describe('Testes da página Drinks', () => {
     userEvent.click(submitSearchButton);
 
     await wait(() => {
-      expect(screen.getByText(/3-mile Long Island Iced Tea/i)).toBeInTheDocument();
+      expect(screen.getByText(/3-mile long island iced tea/i)).toBeInTheDocument();
     });
   });
 
