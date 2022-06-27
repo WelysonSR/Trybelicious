@@ -25,7 +25,7 @@ function DetailsDrinks() {
   const handleToProgress = () => {
     history.push(`/drinks/${index}/in-progress`);
   };
-  console.log(recipe);
+
   const { ingredients, quantity } = ingredientFilterList(recipe);
 
   return (
