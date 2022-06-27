@@ -53,11 +53,14 @@ export default function Favorite({ infoRecipe, id, type }) {
   return (
     <div>
       <button
-        data-testid="favorite-btn"
         type="button"
         onClick={ handleFavorite }
       >
-        <img src={ isFav ? whiteHeartIcon : blackHeartIcon } alt="favorite-icon" />
+        <img
+          src={ isFav ? whiteHeartIcon : blackHeartIcon }
+          alt="favorite-icon"
+          data-testid="favorite-btn"
+        />
       </button>
     </div>
   );
