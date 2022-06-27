@@ -7,7 +7,6 @@ import App from '../App';
 const SEARCH_INPUT_TEST_ID = 'search-input';
 const SUBMIT_SEARCH_BUTTON_TEST_ID = 'exec-search-btn';
 const FIRST_LETTER_RADIO_TEST_ID = 'first-letter-search-radio';
-const NAME_SEARCH_RADIO_TEST_ID = 'name-search-radio';
 
 const initialState = {
   user: {
@@ -25,18 +24,18 @@ const initialState = {
   },
 };
 
-const TRINTA_MS = 30000;
+const TEN_SECONDS = 10000;
 
 describe('Testes da página Drinks', () => {
-  jest.setTimeout(TRINTA_MS);
+  jest.setTimeout(TEN_SECONDS);
   test('Se a rota da página é /drinks e se o título está correto', () => {
     const { history } = renderWithRouterAndRedux(<App />, initialState, '/drinks');
 
     const { pathname } = history.location;
     expect(pathname).toBe('/drinks');
 
-    const foodTitle = screen.getByRole('heading', { name: /drinks/i });
-    expect(foodTitle).toBeInTheDocument();
+    const drinksTitle = screen.getByRole('heading', { name: /drinks/i });
+    expect(drinksTitle).toBeInTheDocument();
   });
 
   test('Se existe um botão de perfil, que redireciona para /profile, e renderiza uma img',
@@ -77,7 +76,7 @@ describe('Testes da página Drinks', () => {
     const ingredientRadioButton = screen.getByTestId('ingredient-search-radio');
     expect(ingredientRadioButton).toBeInTheDocument();
 
-    const nameRadioButton = screen.getByTestId(NAME_SEARCH_RADIO_TEST_ID);
+    const nameRadioButton = screen.getByTestId('name-search-radio');
     expect(nameRadioButton).toBeInTheDocument();
 
     const firstLetterRadioButton = screen.getByTestId(FIRST_LETTER_RADIO_TEST_ID);
@@ -111,46 +110,38 @@ describe('Testes da página Drinks', () => {
     userEvent.click(submitSearchButton);
 
     await wait(() => {
-      expect(screen.getByText(/3-mile long island iced tea/i)).toBeInTheDocument();
-      expect(screen.getByText(/69 special/i)).toBeInTheDocument();
-      expect(screen.getByText(/a1/i)).toBeInTheDocument();
-      expect(screen.getByText(/abbey cocktail/i)).toBeInTheDocument();
-      expect(screen.getByText(/abbey martini/i)).toBeInTheDocument();
-      expect(screen.getAllByText(/ace/i)[0]).toBeInTheDocument();
-      expect(screen.getByText(/adam & eve/i)).toBeInTheDocument();
-      expect(screen.getByText(/addison/i)).toBeInTheDocument();
-      expect(screen.getByText(/alaska cocktail/i)).toBeInTheDocument();
-      expect(screen.getByText(/alexander/i)).toBeInTheDocument();
-      expect(screen.getByText(/angel face/i)).toBeInTheDocument();
+      expect(screen.getByText(/3-mile Long Island Iced Tea/i)).toBeInTheDocument();
     });
   });
 
-  // test('Se o resultado do filtro for 1 receita, redireciona para detalhes dessa receita',
-  //   () => {
-  //     const { history } = renderWithRouterAndRedux(<App />, initialState, '/drinks');
+  test('Se as receitas são renderizadas ao escolher o filtro "First Letter"',
+    async () => {
+      renderWithRouterAndRedux(<App />, initialState, '/drinks');
 
-  //     const searchButton = screen.getByRole('img', { name: /search/i });
-  //     expect(searchButton).toBeInTheDocument();
+      const searchButton = screen.getByRole('img', { name: /search/i });
+      expect(searchButton).toBeInTheDocument();
 
-  //     userEvent.click(searchButton);
+      userEvent.click(searchButton);
 
-  //     const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-  //     expect(inputSearch).toBeInTheDocument();
-  //     userEvent.type(inputSearch, 'Quentin');
+      const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
+      expect(inputSearch).toBeInTheDocument();
 
-  //     const nameRadioButton = screen.getByTestId(NAME_SEARCH_RADIO_TEST_ID);
-  //     expect(nameRadioButton).toBeInTheDocument();
+      userEvent.type(inputSearch, 'a');
 
-  //     userEvent.click(nameRadioButton);
+      const firstLetterButton = screen.getByTestId(FIRST_LETTER_RADIO_TEST_ID);
+      expect(firstLetterButton).toBeInTheDocument();
 
-  //     const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-  //     expect(submitSearchButton).toBeInTheDocument();
+      userEvent.click(firstLetterButton);
 
-  //     userEvent.click(submitSearchButton);
+      const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
+      expect(submitSearchButton).toBeInTheDocument();
 
-  //     const { pathname } = history.location;
-  //     expect(pathname).toBe('/drinks/11993');
-  //   });
+      userEvent.click(submitSearchButton);
+
+      await wait(() => {
+        expect(screen.getByText(/a1/i)).toBeInTheDocument();
+      });
+    });
 
   test('Se é exibido um alerta quando não é encontrada uma receita', async () => {
     renderWithRouterAndRedux(<App />, initialState, '/drinks');
@@ -164,9 +155,9 @@ describe('Testes da página Drinks', () => {
 
     const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
     expect(inputSearch).toBeInTheDocument();
-    userEvent.type(inputSearch, 'arroz');
+    userEvent.type(inputSearch, 'cachaça');
 
-    const nameRadioButton = screen.getByTestId(NAME_SEARCH_RADIO_TEST_ID);
+    const nameRadioButton = screen.getByTestId('name-search-radio');
     expect(nameRadioButton).toBeInTheDocument();
 
     userEvent.click(nameRadioButton);
