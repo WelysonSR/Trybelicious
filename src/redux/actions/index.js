@@ -4,6 +4,7 @@ export const SAVE_DRINKS = 'SAVE_DRINKS';
 export const SAVE_FAVORIT = 'SAVE_FAVORIT';
 export const SAVE_FOODS_RECIPES = 'SAVE_FOODS_RECIPES';
 export const SAVE_DRINKS_RECIPES = 'SAVE_DRINKS_RECIPES';
+export const SAVE_DONERECIPE = 'SAVE_DONERECIPE';
 
 export const saveEmail = (action) => ({
   type: EMAIL_REDUX,
@@ -32,6 +33,11 @@ export const saveAllFoodsRecipes = (action) => ({
 
 export const saveAllDrinksRecipes = (action) => ({
   type: SAVE_DRINKS_RECIPES,
+  action,
+});
+
+export const saveDoneRecipes = (action) => ({
+  type: SAVE_DONERECIPE,
   action,
 });
 
