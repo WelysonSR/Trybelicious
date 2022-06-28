@@ -16,6 +16,14 @@ function Foods() {
   const [allRecipes, setAllRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryOn, setCategoryOn] = useState('');
+  const [exploreFilter, setExploreFilter] = useState([]);
+  const [verifyExplorer, setVerifyExplorer] = useState(false);
+  const foodsExplore = useSelector((state) => state.foods.recipeForExplore);
+
+  useEffect(() => {
+    setVerifyExplorer(true);
+    setExploreFilter(foodsExplore);
+  }, [foodsExplore]);
 
   useEffect(() => {
     const fetchCategoriesMealsButtons = async () => {
@@ -67,6 +75,7 @@ function Foods() {
   };
 
   const handleClick = async (value) => {
+    setVerifyExplorer(false);
     if (categoryOn === 'All' || categoryOn === value) {
       fetchAllFoodRecipes();
       setCategoryOn(value);
@@ -87,6 +96,18 @@ function Foods() {
         />
       </section>
       <main className="cardAll">
+        {
+          verifyExplorer && exploreFilter.map((explored, i) => (
+            <Card
+              key={ explored.idMeal }
+              img={ explored.strMealThumb }
+              title={ explored.strMeal }
+              index={ i }
+              id={ explored.idMeal }
+              type="foods"
+            />
+          ))
+        }
         {
           meal.length === 0 && allRecipes.map((recipe, i) => (
             <Card

@@ -16,6 +16,15 @@ function Drinks() {
   const [allRecipes, setAllRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [categoryOn, setCategoryOn] = useState('');
+  const [exploreFilter, setExploreFilter] = useState([]);
+  const [verifyExplorer, setVerifyExplorer] = useState(false);
+  const drinksExplore = useSelector((state) => state.foods.recipeForExplore);
+
+  useEffect(() => {
+    setVerifyExplorer(true);
+    setExploreFilter(drinksExplore);
+    console.log(drinksExplore);
+  }, [drinksExplore]);
 
   useEffect(() => {
     const fetchCategoriesDrinksButtons = async () => {
@@ -66,6 +75,7 @@ function Drinks() {
   };
 
   const handleClick = async (value) => {
+    setVerifyExplorer(false);
     if (categoryOn === 'All' || categoryOn === value) {
       fetchAllDrinksRecipes();
       setCategoryOn(value);
@@ -86,6 +96,18 @@ function Drinks() {
         />
       </section>
       <main className="cardAll">
+        {
+          verifyExplorer && exploreFilter.map((explored, i) => (
+            <Card
+              key={ explored.idDrink }
+              img={ explored.strDrinkThumb }
+              title={ explored.strDrink }
+              index={ i }
+              id={ explored.idDrink }
+              type="drinks"
+            />
+          ))
+        }
         {
           cocktails.length === 0 && allRecipes.map((recipe, i) => (
             <Card

@@ -5,6 +5,12 @@ export const SAVE_FAVORIT = 'SAVE_FAVORIT';
 export const SAVE_FOODS_RECIPES = 'SAVE_FOODS_RECIPES';
 export const SAVE_DRINKS_RECIPES = 'SAVE_DRINKS_RECIPES';
 export const SAVE_DONERECIPE = 'SAVE_DONERECIPE';
+export const SAVE_RECIPE_EXPLORE = 'SAVE_RECIPE_EXPLORE';
+
+export const saveRecipesExplore = (action) => ({
+  type: SAVE_RECIPE_EXPLORE,
+  action,
+});
 
 export const saveEmail = (action) => ({
   type: EMAIL_REDUX,

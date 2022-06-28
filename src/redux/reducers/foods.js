@@ -1,9 +1,14 @@
-import { SAVE_INGREDIENT, SAVE_FAVORIT, SAVE_DONERECIPE } from '../actions';
+import {
+  SAVE_INGREDIENT,
+  SAVE_FAVORIT, SAVE_DONERECIPE,
+  SAVE_RECIPE_EXPLORE,
+} from '../actions';
 
 const INITIAL_STATE = {
   meals: [],
   doneRecipes: [],
   favoriteRecipes: [],
+  recipeForExplore: [],
 };
 
 function foodsReducer(state = INITIAL_STATE, action) {
@@ -14,6 +19,8 @@ function foodsReducer(state = INITIAL_STATE, action) {
     return { ...state, favoriteRecipes: action.action };
   case SAVE_DONERECIPE:
     return { ...state, doneRecipes: action.action };
+  case SAVE_RECIPE_EXPLORE:
+    return { ...state, recipeForExplore: action.action };
   default:
     return state;
   }
