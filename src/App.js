@@ -16,6 +16,7 @@ import ExploreIngredients from './pages/ExploreIngredients';
 import ExploreNationalities from './pages/ExploreNationalities';
 import DetailsFoods from './pages/DetailsFoods';
 import DetailsDrinks from './pages/DetailsDrinks';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
       <Route exact path="/drinks" component={ Drinks } />
       <Route exact path="/foods" component={ Foods } />
       <Route exact path="/" component={ Login } />
+      <Route exact path="*" component={ NotFound } />
     </Switch>
   );
 }
