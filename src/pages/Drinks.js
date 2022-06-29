@@ -98,7 +98,7 @@ function Drinks() {
         {
           verifyExplorer && exploreFilter.map((explored, i) => (
             <Card
-              key={ explored.idDrink }
+              key={ i }
               img={ explored.strDrinkThumb }
               title={ explored.strDrink }
               index={ i }
