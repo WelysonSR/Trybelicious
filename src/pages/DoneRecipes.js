@@ -15,11 +15,6 @@ function DoneRecipes() {
     dispatch(saveDoneRecipes(recipes));
   }, [dispatch]);
 
-  useEffect(() => {
-    const recipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
-    dispatch(saveDoneRecipes(recipes));
-  }, [doneRecipes, dispatch]);
-
   const filterFoods = () => {
     const newFilter = doneRecipes.filter((food) => food.type === 'food');
     setFilterType(newFilter);
