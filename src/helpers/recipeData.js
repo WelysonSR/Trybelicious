@@ -17,14 +17,14 @@ function doneRecipeHandler(recipe, type, itemChecked) {
         [recipe.idDrink]: [itemChecked],
       },
     };
-    // console.log(itemChecked);
+    console.log(newInProgressRecipes);
   } else if (type === 'foods') {
     const newInProgressRecipes = {
       meals: {
         [recipe.idMeal]: [itemChecked],
       },
     };
-    // console.log(itemChecked);
+    console.log(newInProgressRecipes);
   }
 }
 
