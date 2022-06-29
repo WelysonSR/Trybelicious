@@ -5,12 +5,16 @@ import Favorite from './Favorite';
 import Share from './Share';
 import ingredientFilterList from '../helpers/IngredientFilter';
 import './Progress.css';
+import doneRecipeHandler from '../helpers/recipeData';
 
 function Progress() {
+  // vqv
+  // const current = new Date();
   const [recipe, setRecipe] = useState([]);
   const [foodOrDrink, setFoodOrDrink] = useState('');
   const { id } = useParams();
-
+  // const [doneDate, setDoneDate] = useState('');
+  const [doneRecipe] = useState(false);
   const history = useHistory();
   const pathname = history.location;
   const type = pathname.pathname.split('/')[1];
@@ -43,7 +47,15 @@ function Progress() {
     const newItemChecked = [...itemChecked];
     newItemChecked[e.target.id] = !newItemChecked[e.target.id];
     setItemChecked(newItemChecked);
-  }, [itemChecked]);
+    // setDoneRecipe(trueCheck.test(newItemChecked));
+    console.log(doneRecipe);
+  }, [doneRecipe, itemChecked]);
+
+  const handleDoneClick = () => {
+    // setDoneDate(current);
+    doneRecipeHandler(recipe, type, ingredients, quantity);
+    history.push('/done-recipes');
+  };
 
   return (
     <div>
@@ -87,8 +99,8 @@ function Progress() {
                         ? 'through'
                         : '' }
                     >
-                      {'   '}
-                      {`${quantity[i] || ''}`}
+                      {' '}
+                      {` - ${quantity[i] || ''}`}
                     </p>
                   </div>
                 ))
@@ -97,7 +109,14 @@ function Progress() {
             <p data-testid="instructions">
               {recipe.strInstructions}
             </p>
-            <button type="button" data-testid="finish-recipe-btn">Finish Recipe</button>
+            <button
+              type="button"
+              data-testid="finish-recipe-btn"
+              disabled={ doneRecipe }
+              onClick={ handleDoneClick }
+            >
+              Finish Recipe
+            </button>
           </div>
         )
       }
