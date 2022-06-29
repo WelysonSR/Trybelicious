@@ -23,7 +23,7 @@ export default function Favorite({ infoRecipe, id, type }) {
 
   const favRecipe = {
     id: infoRecipe.idMeal || infoRecipe.idDrink,
-    type,
+    type: type.split('s')[0],
     nationality: infoRecipe.strArea || '',
     category: infoRecipe.strCategory,
     alcoholicOrNot: infoRecipe.strAlcoholic || '',
@@ -39,6 +39,7 @@ export default function Favorite({ infoRecipe, id, type }) {
       localStorage.setItem('favoriteRecipes',
         JSON.stringify([...newRecipeFavorites, favRecipe]));
       setVerifyFav(!verifyFav);
+      console.log(allRecipeFavorites);
     }
     if (verifyFav) {
       const allRecipeFavorites = JSON.parse(localStorage
@@ -47,6 +48,7 @@ export default function Favorite({ infoRecipe, id, type }) {
       localStorage.setItem('favoriteRecipes',
         JSON.stringify([...newRecipeFavorites]));
       setVerifyFav(!verifyFav);
+      console.log(allRecipeFavorites);
     }
   }, [infoRecipe, isFav, id]);
 

@@ -8,7 +8,6 @@ import './Progress.css';
 import doneRecipeHandler from '../helpers/recipeData';
 
 function Progress() {
-  // vqv
   // const current = new Date();
   const [recipe, setRecipe] = useState([]);
   const [foodOrDrink, setFoodOrDrink] = useState('');
@@ -18,6 +17,9 @@ function Progress() {
   const history = useHistory();
   const pathname = history.location;
   const type = pathname.pathname.split('/')[1];
+  const [itemChecked, setItemChecked] = useState([]);
+  const [ingredientList, setIngredientList] = useState([]);
+  // const forEach = ingredients.forEach((e) => false);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -38,29 +40,35 @@ function Progress() {
     getRecipe();
   }, [id, type]);
 
+  useEffect(() => {
+    const { ingredients, quantity } = ingredientFilterList(recipe);
+    setIngredientList([ingredients, quantity]);
+    if (ingredients.length > 0) {
+      setItemChecked(ingredients.map(() => false));
+    }
+    // console.log(ingredientList);
+  }, [recipe]);
+
   const srcImg = recipe.strDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
   const title = recipe.strDrink ? recipe.strDrink : recipe.strMeal;
-  const { ingredients, quantity } = ingredientFilterList(recipe);
-  const [itemChecked, setItemChecked] = useState(() => ingredients.map(() => false));
-
   const itemHandler = useCallback((e) => {
     const newItemChecked = [...itemChecked];
     newItemChecked[e.target.id] = !newItemChecked[e.target.id];
     setItemChecked(newItemChecked);
+    doneRecipeHandler(recipe, type, itemChecked);
     // setDoneRecipe(trueCheck.test(newItemChecked));
-    console.log(doneRecipe);
   }, [doneRecipe, itemChecked]);
 
   const handleDoneClick = () => {
     // setDoneDate(current);
-    doneRecipeHandler(recipe, type, ingredients, quantity);
+    // doneRecipeHandler(recipe, type, ingredients, quantity);
     history.push('/done-recipes');
   };
 
   return (
     <div>
       {
-        recipe
+        ingredientList[0]
         && (
           <div>
             <img src={ srcImg } data-testid="recipe-photo" alt={ title } />
@@ -78,7 +86,7 @@ function Progress() {
             </div>
             <div>
               {
-                ingredients.map((ingredient, i) => (
+                ingredientList[0].map((ingredient, i) => (
                   <div
                     data-testid={ `${i}-ingredient-step` }
                     className="ingredient__list"
@@ -87,7 +95,8 @@ function Progress() {
                     <input
                       type="checkbox"
                       id={ i }
-                      onChange={ itemHandler }
+                      onChange={ (e) => itemHandler(e, i) }
+                      // checked={ isChecked[i] }
                     />
                     <p
                       className={ itemChecked[i] ? 'through' : '' }
@@ -100,7 +109,7 @@ function Progress() {
                         : '' }
                     >
                       {' '}
-                      {` - ${quantity[i] || ''}`}
+                      {` - ${ingredientList[1][i] || ''}`}
                     </p>
                   </div>
                 ))
