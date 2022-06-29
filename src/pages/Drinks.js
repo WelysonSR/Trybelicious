@@ -23,7 +23,6 @@ function Drinks() {
   useEffect(() => {
     setVerifyExplorer(true);
     setExploreFilter(drinksExplore);
-    console.log(drinksExplore);
   }, [drinksExplore]);
 
   useEffect(() => {

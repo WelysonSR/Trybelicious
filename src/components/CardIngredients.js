@@ -15,7 +15,7 @@ function CardIngredients({ index, type, recipe }) {
     } else {
       setImg(`https://www.thecocktaildb.com/images/ingredients/${recipe.strIngredient1}-Small.png`);
     }
-  }, []);
+  }, [recipe, type]);
 
   const headleClick = async () => {
     const MAXIMUMI_ITEMS = 12;
