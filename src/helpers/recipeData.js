@@ -1,31 +1,38 @@
-// import React, { useCallback, useEffect, useState } from 'react';
-// import PropTypes from 'prop-types';
-// import { useDispatch } from 'react-redux';
-// import { fetchIngredient, fetchName, fetchFirstLetter } from '../redux/actions';
+export function doneRecipeHandler(recipe, type, doneDate) {
+  const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
 
-// function doneRecipeHandler() {
-
-// }
-
-function doneRecipeHandler(recipe, type, itemChecked) {
-  // const [isDone, setIsDone] = useState(true);
-  // const [verifyDone, setVerifyDone] = useState(false);
-
-  if (type === 'drinks') {
-    const newInProgressRecipes = {
-      cocktails: {
-        [recipe.idDrink]: [itemChecked],
-      },
-    };
-    console.log(newInProgressRecipes);
-  } else if (type === 'foods') {
-    const newInProgressRecipes = {
-      meals: {
-        [recipe.idMeal]: [itemChecked],
-      },
-    };
-    console.log(newInProgressRecipes);
-  }
+  const done = {
+    id: recipe.idMeal || recipe.idDrink,
+    type: type.split('s')[0],
+    nationality: recipe.strArea || '',
+    category: recipe.strCategory,
+    alcoholicOrNot: recipe.strAlcoholic || '',
+    name: recipe.strMeal || recipe.strDrink,
+    image: recipe.strMealThumb || recipe.strDrinkThumb,
+    doneDate,
+    tags: recipe.strTags || '',
+  };
+  const newDoneRecipe = [...doneRecipes, done];
+  localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipe));
 }
 
-export default doneRecipeHandler;
+export function progressRecipes(recipe, type, itemChecked) {
+  const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
+  let newInProgressRecipes = { ...inProgressRecipes };
+  if (type === 'drinks') {
+    newInProgressRecipes = {
+      cocktails: {
+        ...inProgressRecipes.cocktails,
+        [recipe.idDrink]: itemChecked,
+      },
+    };
+  } else if (type === 'foods') {
+    newInProgressRecipes = {
+      meals: {
+        ...inProgressRecipes.meals,
+        [recipe.idMeal]: itemChecked,
+      },
+    };
+  }
+  localStorage.setItem('inProgressRecipes', JSON.stringify(newInProgressRecipes));
+}

@@ -5,20 +5,25 @@ import Favorite from './Favorite';
 import Share from './Share';
 import ingredientFilterList from '../helpers/IngredientFilter';
 import './Progress.css';
-import doneRecipeHandler from '../helpers/recipeData';
+import { doneRecipeHandler, progressRecipes } from '../helpers/recipeData';
 
 function Progress() {
-  // const current = new Date();
+  const current = new Date();
+  const month = current.getUTCMonth() + 1;
+  const day = current.getUTCDay();
+  const year = current.getUTCFullYear();
   const [recipe, setRecipe] = useState([]);
   const [foodOrDrink, setFoodOrDrink] = useState('');
   const { id } = useParams();
   const [doneRecipe] = useState(false);
   const history = useHistory();
   const pathname = history.location;
+  const [doneDate, setDoneDate] = useState('');
   const type = pathname.pathname.split('/')[1];
   const [itemChecked, setItemChecked] = useState([]);
   const [ingredientList, setIngredientList] = useState([]);
   const [isDoneDisable, setIsDoneDisable] = useState(true);
+  // const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -53,18 +58,22 @@ function Progress() {
 
   const srcImg = recipe.strDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
   const title = recipe.strDrink ? recipe.strDrink : recipe.strMeal;
+
   const itemHandler = useCallback((e) => {
     const newItemChecked = [...itemChecked];
     newItemChecked[e.target.id] = !newItemChecked[e.target.id];
     setItemChecked(newItemChecked);
-    doneRecipeHandler(recipe, type, itemChecked);
+    progressRecipes(recipe, type, itemChecked);
     setIsDoneDisable(allArrTrue(itemChecked));
   }, [doneRecipe, itemChecked, isDoneDisable]);
-  console.log(itemChecked.every((item) => item));
+
+  const dater = useCallback(() => {
+    setDoneDate(`${day}/${month}/${year}`);
+  }, [doneDate]);
 
   const handleDoneClick = () => {
-    // setDoneDate(current);
-    // doneRecipeHandler(recipe, type, ingredients, quantity);
+    dater();
+    doneRecipeHandler(recipe, type, doneDate);
     history.push('/done-recipes');
   };
 
@@ -102,17 +111,15 @@ function Progress() {
                       // checked={ isChecked[i] }
                     />
                     <p
-                      className={ itemChecked[i] ? 'through' : '' }
-                    >
-                      {ingredient}
-                    </p>
-                    <p
                       className={ itemChecked[i]
                         ? 'through'
                         : '' }
                     >
-                      {' '}
-                      {` - ${ingredientList[1][i] || ''}`}
+                      {
+                        ingredientList[1][i]
+                          ? `${ingredient} - ${ingredientList[1][i]}`
+                          : ingredient
+                      }
                     </p>
                   </div>
                 ))
