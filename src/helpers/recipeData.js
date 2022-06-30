@@ -1,31 +1,38 @@
-// import React, { useCallback, useEffect, useState } from 'react';
-// import PropTypes from 'prop-types';
-// import { useDispatch } from 'react-redux';
-// import { fetchIngredient, fetchName, fetchFirstLetter } from '../redux/actions';
+export function doneRecipeHandler(recipe, type, doneDate) {
+  const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
 
-// function doneRecipeHandler() {
+  const done = {
+    id: recipe.idMeal || recipe.idDrink,
+    type: type.split('s')[0],
+    nationality: recipe.strArea || '',
+    category: recipe.strCategory,
+    alcoholicOrNot: recipe.strAlcoholic || '',
+    name: recipe.strMeal || recipe.strDrink,
+    image: recipe.strMealThumb || recipe.strDrinkThumb,
+    doneDate,
+    tags: recipe.strTags || '',
+  };
+  const newDoneRecipe = [...doneRecipes, done];
+  localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipe));
+}
 
-// }
-
-function doneRecipeHandler(recipe, type, itemChecked) {
-  // const [isDone, setIsDone] = useState(true);
-  // const [verifyDone, setVerifyDone] = useState(false);
-
+export function progressRecipes(recipe, type, itemChecked) {
+  const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
+  let newInProgressRecipes = { ...inProgressRecipes };
   if (type === 'drinks') {
-    const newInProgressRecipes = {
+    newInProgressRecipes = {
       cocktails: {
+        ...inProgressRecipes.cocktails,
         [recipe.idDrink]: [itemChecked],
       },
     };
-    console.log(newInProgressRecipes);
   } else if (type === 'foods') {
-    const newInProgressRecipes = {
+    newInProgressRecipes = {
       meals: {
+        ...inProgressRecipes.meals,
         [recipe.idMeal]: [itemChecked],
       },
     };
-    console.log(newInProgressRecipes);
   }
+  localStorage.setItem('inProgressRecipes', JSON.stringify(newInProgressRecipes));
 }
-
-export default doneRecipeHandler;
