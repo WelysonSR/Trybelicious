@@ -1,0 +1,63 @@
+.container {
+  align-items: center;
+  border: 1px solid;
+  background-image: url('../images/_MG_1334.jpg');
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
+
+.title {
+  color: rgb(251, 220, 67);
+  font-weight: 200;
+  margin-bottom: 150px;
+  text-align: center;
+  text-shadow: 3px 2px rgba(0, 0, 0, 0.209);
+}
+
+.container input {
+  background-color: rgba(247, 247, 255, 0.65);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.209);
+  color: rgb(96, 92, 78);
+  font-size: 1.2rem;
+  height: 45px;
+  margin-bottom: 25px;
+  outline: none;
+  padding: 10px;
+  width: 100%;
+}
+
+.container input::placeholder {
+  color: rgb(96, 92, 78);
+  font-size: 1.2rem;
+}
+
+.container button {
+  background-color: rgb(251, 220, 67);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.209);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+  height: 45px;
+  transition: 1s ease;
+  width: 100%;
+}
+
+
+.container button:disabled {
+  background-color: rgba(251, 220, 67, 0.376);
+}
+
+.form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 75%;
+}

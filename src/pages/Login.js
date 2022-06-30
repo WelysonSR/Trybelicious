@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { saveEmail } from '../redux/actions';
+import styles from './Login.module.css';
 
 function Login() {
   const history = useHistory();
@@ -33,31 +34,38 @@ function Login() {
   };
 
   return (
-    <div>
-      <input
-        data-testid="email-input"
-        name="email"
-        value={ email }
-        type="email"
-        placeholder="Email"
-        onChange={ ({ target }) => setEmail(target.value) }
-      />
-      <input
-        data-testid="password-input"
-        name="password"
-        value={ password }
-        type="password"
-        placeholder="Senha"
-        onChange={ ({ target }) => setPassword(target.value) }
-      />
-      <button
-        data-testid="login-submit-btn"
-        type="button"
-        onClick={ handleEnterClick }
-        disabled={ enabled }
-      >
-        Enter
-      </button>
+    <div className={ styles.container }>
+      <section className={ styles.title }>
+        <h6>Welcome to</h6>
+        <h1>Trybelicious</h1>
+      </section>
+      <section className={ styles.form }>
+        <input
+          data-testid="email-input"
+          name="email"
+          value={ email }
+          type="email"
+          placeholder="Email"
+          onChange={ ({ target }) => setEmail(target.value) }
+        />
+        <input
+          data-testid="password-input"
+          name="password"
+          value={ password }
+          type="password"
+          placeholder="Senha"
+          onChange={ ({ target }) => setPassword(target.value) }
+        />
+        <button
+          data-testid="login-submit-btn"
+          type="button"
+          onClick={ handleEnterClick }
+          disabled={ enabled }
+        >
+          ENTER
+        </button>
+      </section>
+
     </div>
   );
 }

@@ -1,16 +1,43 @@
 /* stylelint-disable linebreaks */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap') ;
+
+:root {
+
+  --yellow: rgb(251, 220, 67);
+
+  --background: rgb(247, 247, 255);
+
+  --darkGray: rgb(96, 92, 78);
+
+  --blue: rgb(143, 216, 223);
+
+  --red: rgb(255, 99, 88);
+}
+
 .header-container {
   align-items: center;
-  background-color: white;
-  border-bottom: 1px solid whitesmoke;
+  background-color: var(--yellow);
+  border-radius: 0 0 10px 10px;
+  color: var(--darkGray);
   display: flex;
+  font-family: Raleway , sans-serif;
+  font-weight: 400;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 0.8rem 1rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .searchBtn {
   background: none;
   border: none;
+}
+
+.searchBtn img {
+  color: rgb(96, 92, 78);
 }
 
 .open {
@@ -40,3 +67,4 @@
   margin-left: 10px;
   padding: 0.5rem;
 }
+

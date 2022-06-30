@@ -1,8 +1,12 @@
 /* stylelint-disable linebreaks */
 .footer-container {
+  background-color: var(--yellow);
+  border-radius: 10px 10px 0 0;
   bottom: 0;
   display: flex;
   justify-content: space-between;
+  margin-top: 80px;
+  padding: 0.8rem 1rem;
   position: fixed;
   width: 100%;
 }
