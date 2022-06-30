@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import CardDoneRecipes from '../components/CardDoneRecipes';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
-import { saveDoneRecipes } from '../redux/actions';
 
 function DoneRecipes() {
-  const dispatch = useDispatch();
-  const doneRecipes = useSelector((state) => state.foods.doneRecipes);
-  const [filterType, setFilterType] = useState(doneRecipes);
-
-  useEffect(() => {
-    const recipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
-    dispatch(saveDoneRecipes(recipes));
-  }, [dispatch]);
+  const [recipes] = useState(JSON
+    .parse(localStorage.getItem('doneRecipes')) || []);
+  const [filterType, setFilterType] = useState(recipes);
 
   const filterFoods = () => {
-    const newFilter = doneRecipes.filter((food) => food.type === 'food');
+    const newFilter = filterType.filter((food) => food.type === 'food');
     setFilterType(newFilter);
   };
 
   const filterDrinks = () => {
-    const newFilter = doneRecipes.filter((drinks) => drinks.type === 'drink');
+    const newFilter = filterType.filter((drinks) => drinks.type === 'drink');
     setFilterType(newFilter);
   };
 
@@ -32,7 +25,7 @@ function DoneRecipes() {
         <button
           type="button"
           data-testid="filter-by-all-btn"
-          onClick={ () => setFilterType(doneRecipes) }
+          onClick={ () => setFilterType(recipes) }
         >
           All
         </button>
