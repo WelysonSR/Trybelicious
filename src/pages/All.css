@@ -1,9 +1,10 @@
 /* stylelint-disable linebreaks */
-.cardAll {
+/* .cardAll {
+  background-color: var(--background);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-}
+} */
 
 .recipe {
   bottom: 0;

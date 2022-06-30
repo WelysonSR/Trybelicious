@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from './CategoriesButtons.module.css';
 
 function CategoriesButtons({ categories, handleClick, handleClickAll }) {
   return (
-    <div>
+    <div className={ styles.container }>
       { categories.map((category) => (
         <button
           key={ `${category.strCategory}` }

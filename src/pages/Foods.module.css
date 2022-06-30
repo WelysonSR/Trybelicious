@@ -1,0 +1,25 @@
+.container {
+  background-color: var(--background);
+  margin-bottom: 60px;
+  margin-top: 80px;
+}
+
+.filters {
+  align-items: center;
+  background-color: var(--background);
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  padding: 20px 10px;
+  width: 90%;
+}
+
+.cardAll {
+  align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin: auto;
+  width: 90%;
+}
+

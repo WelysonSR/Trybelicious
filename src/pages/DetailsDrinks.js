@@ -51,8 +51,7 @@ function DetailsDrinks() {
               key={ i }
               data-testid={ `${i}-ingredient-name-and-measure` }
             >
-              {/* ${!quantity[i] ? '' : <span>-</span>} */}
-              {`${ingredient} - ${quantity[i] || ''}`}
+              { quantity[i] ? `${ingredient} - ${quantity[i]}` : ingredient }
             </li>
           ))
         }

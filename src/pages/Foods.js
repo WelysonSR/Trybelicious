@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
 import Search from '../images/searchIcon.svg';
+import styles from './Foods.module.css';
 import './All.css';
 
 function Foods() {
@@ -86,16 +87,16 @@ function Foods() {
   };
 
   return (
-    <>
+    <div className={ styles.container }>
       <Header img1={ Profile } title="Foods" img2={ Search } />
-      <section>
+      <section className={ styles.filters }>
         <CategoriesButtons
           categories={ categories }
           handleClick={ ({ target }) => handleClick(target.value) }
           handleClickAll={ () => fetchAllFoodRecipes() }
         />
       </section>
-      <main className="cardAll">
+      <main className={ styles.cardAll }>
         {
           verifyExplorer && exploreFilter.map((explored, i) => (
             <Card
@@ -134,7 +135,7 @@ function Foods() {
         }
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 
