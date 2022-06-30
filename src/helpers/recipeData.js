@@ -23,14 +23,14 @@ export function progressRecipes(recipe, type, itemChecked) {
     newInProgressRecipes = {
       cocktails: {
         ...inProgressRecipes.cocktails,
-        [recipe.idDrink]: [itemChecked],
+        [recipe.idDrink]: itemChecked,
       },
     };
   } else if (type === 'foods') {
     newInProgressRecipes = {
       meals: {
         ...inProgressRecipes.meals,
-        [recipe.idMeal]: [itemChecked],
+        [recipe.idMeal]: itemChecked,
       },
     };
   }
