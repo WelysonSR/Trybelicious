@@ -12,14 +12,13 @@ function Progress() {
   const [recipe, setRecipe] = useState([]);
   const [foodOrDrink, setFoodOrDrink] = useState('');
   const { id } = useParams();
-  // const [doneDate, setDoneDate] = useState('');
   const [doneRecipe] = useState(false);
   const history = useHistory();
   const pathname = history.location;
   const type = pathname.pathname.split('/')[1];
   const [itemChecked, setItemChecked] = useState([]);
   const [ingredientList, setIngredientList] = useState([]);
-  // const forEach = ingredients.forEach((e) => false);
+  const [isDoneDisable, setIsDoneDisable] = useState(true);
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -49,6 +48,10 @@ function Progress() {
     // console.log(ingredientList);
   }, [recipe]);
 
+  function allArrTrue(array) {
+    return array.every((item) => item === true);
+  }
+
   const srcImg = recipe.strDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
   const title = recipe.strDrink ? recipe.strDrink : recipe.strMeal;
   const itemHandler = useCallback((e) => {
@@ -56,7 +59,7 @@ function Progress() {
     newItemChecked[e.target.id] = !newItemChecked[e.target.id];
     setItemChecked(newItemChecked);
     doneRecipeHandler(recipe, type, itemChecked);
-    // setDoneRecipe(trueCheck.test(newItemChecked));
+    setIsDoneDisable(allArrTrue(itemChecked));
   }, [doneRecipe, itemChecked]);
 
   const handleDoneClick = () => {
@@ -121,7 +124,7 @@ function Progress() {
             <button
               type="button"
               data-testid="finish-recipe-btn"
-              disabled={ doneRecipe }
+              disabled={ isDoneDisable }
               onClick={ handleDoneClick }
             >
               Finish Recipe
