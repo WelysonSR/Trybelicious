@@ -8,10 +8,7 @@ const TEN_SECONDS = 10000;
 
 const initialState = {
   user: {
-    email: {
-      type: 'EMAIL-REDUX',
-      action: 'teste@teste.com',
-    },
+    email: 'teste@teste.com',
   },
   foods: {
     meals: [],
