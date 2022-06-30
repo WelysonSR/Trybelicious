@@ -45,11 +45,10 @@ function Progress() {
     if (ingredients.length > 0) {
       setItemChecked(ingredients.map(() => false));
     }
-    // console.log(ingredientList);
   }, [recipe]);
 
   function allArrTrue(array) {
-    return array.every((item) => item === true);
+    return array.every((item) => !item);
   }
 
   const srcImg = recipe.strDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
@@ -60,7 +59,8 @@ function Progress() {
     setItemChecked(newItemChecked);
     doneRecipeHandler(recipe, type, itemChecked);
     setIsDoneDisable(allArrTrue(itemChecked));
-  }, [doneRecipe, itemChecked]);
+  }, [doneRecipe, itemChecked, isDoneDisable]);
+  console.log(itemChecked.every((item) => item));
 
   const handleDoneClick = () => {
     // setDoneDate(current);
