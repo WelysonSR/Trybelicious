@@ -22,8 +22,8 @@ function Progress() {
   const type = pathname.pathname.split('/')[1];
   const [itemChecked, setItemChecked] = useState([]);
   const [ingredientList, setIngredientList] = useState([]);
-  const [isDoneDisable, setIsDoneDisable] = useState(true);
-  // const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
+  const [isDoneDisable, setIsDoneDisable] = useState(false);
+  const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -47,8 +47,23 @@ function Progress() {
   useEffect(() => {
     const { ingredients, quantity } = ingredientFilterList(recipe);
     setIngredientList([ingredients, quantity]);
-    if (ingredients.length > 0) {
+    if (Object.keys(inProgressRecipes).length === 0 && ingredients.length > 0) {
       setItemChecked(ingredients.map(() => false));
+    } else if (Object.keys(inProgressRecipes).length !== 0) {
+      switch (type) {
+      case 'foods': {
+        const arr = Object.entries(inProgressRecipes.meals);
+        const arrExist = arr.find((itemId) => itemId[0] === id);
+        if (arrExist) { setItemChecked(arrExist[1]); }
+        break; }
+      case 'drinks': {
+        const arr = Object.entries(inProgressRecipes.cocktails);
+        const arrExist = arr.find((itemId) => itemId[0] === id);
+        if (arrExist) { setItemChecked(arrExist[1]); }
+        break; }
+      default:
+        console.log('');
+      }
     }
   }, [recipe]);
 
@@ -59,11 +74,12 @@ function Progress() {
   const srcImg = recipe.strDrink ? recipe.strDrinkThumb : recipe.strMealThumb;
   const title = recipe.strDrink ? recipe.strDrink : recipe.strMeal;
 
+  progressRecipes(id, type, itemChecked);
   const itemHandler = useCallback((e) => {
     const newItemChecked = [...itemChecked];
     newItemChecked[e.target.id] = !newItemChecked[e.target.id];
     setItemChecked(newItemChecked);
-    progressRecipes(recipe, type, itemChecked);
+    // progressRecipes(recipe, type, itemChecked);
     setIsDoneDisable(allArrTrue(itemChecked));
   }, [doneRecipe, itemChecked, isDoneDisable]);
 
@@ -108,7 +124,7 @@ function Progress() {
                       type="checkbox"
                       id={ i }
                       onChange={ (e) => itemHandler(e, i) }
-                      // checked={ isChecked[i] }
+                      checked={ itemChecked[i] }
                     />
                     <p
                       className={ itemChecked[i]

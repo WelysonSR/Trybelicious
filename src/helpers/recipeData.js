@@ -16,21 +16,21 @@ export function doneRecipeHandler(recipe, type, doneDate) {
   localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipe));
 }
 
-export function progressRecipes(recipe, type, itemChecked) {
+export function progressRecipes(id, type, itemChecked) {
   const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
   let newInProgressRecipes = { ...inProgressRecipes };
   if (type === 'drinks') {
     newInProgressRecipes = {
       cocktails: {
         ...inProgressRecipes.cocktails,
-        [recipe.idDrink]: itemChecked,
+        [id]: itemChecked,
       },
     };
   } else if (type === 'foods') {
     newInProgressRecipes = {
       meals: {
         ...inProgressRecipes.meals,
-        [recipe.idMeal]: itemChecked,
+        [id]: itemChecked,
       },
     };
   }
