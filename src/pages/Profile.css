@@ -1,13 +1,15 @@
 /* stylelint-disable linebreaks */
 .profile-container {
-  font-size: small;
-  text-align: center;
+  background-image: url('../images/MG0810.jpg');
   width: 100%;
+  height: 100vh;
+  background-size: cover;
+  margin-top: 50px;
 }
 
 .user-email {
   font-size: x-large;
-  margin-top: 30px;
+  color: var(--background);
 }
 
 .button-tags {
@@ -17,7 +19,23 @@
   justify-content: center;
 }
 
+.button-tags h6 {
+  font-size: x-large;
+  color: var(--background);
+
+}
+
 .button-width {
-  margin-top: 30px;
-  width: 50%;
+  margin-top: 20px;
+  background-color: var(--blue);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.209);
+  color: var(--darkGray);
+  font-size: 1.2rem;
+  height: 45px;
+  transition: 1s ease;
+  padding: 10px;
+  opacity: 0.9;
+  width: 70%;
 }

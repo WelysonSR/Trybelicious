@@ -4,6 +4,7 @@ import CardFavoritAll from '../components/CardFavoritAll';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
 import { saveFavorit } from '../redux/actions';
+import styles from './FavoriteRecipes.module.css';
 
 function FavoriteRecipes() {
   const favoriteRecipes = useSelector((state) => state.foods.favoriteRecipes);
@@ -31,10 +32,11 @@ function FavoriteRecipes() {
   };
 
   return (
-    <div>
-      <Header img1={ Profile } title="Favorite Recipes" />
-      <form>
+    // eslint-disable-next-line react/jsx-one-expression-per-line
+    <><Header img1={ Profile } title="Favorite Recipes" />
+      <form className={ styles.container }>
         <button
+          className={ styles.btn }
           type="button"
           data-testid="filter-by-all-btn"
           onClick={ () => setFavoritAll(favoriteRecipes) }
@@ -42,6 +44,7 @@ function FavoriteRecipes() {
           All
         </button>
         <button
+          className={ styles.btn }
           type="button"
           data-testid="filter-by-food-btn"
           onClick={ filterFoods }
@@ -49,6 +52,7 @@ function FavoriteRecipes() {
           Food
         </button>
         <button
+          className={ styles.btn }
           type="button"
           data-testid="filter-by-drink-btn"
           onClick={ filterDrinks }
@@ -56,12 +60,12 @@ function FavoriteRecipes() {
           Drinks
         </button>
       </form>
-      {
-        favoritAll.map((favofit, i) => (
+      <div className={ styles.favCards }>
+        {favoritAll.map((favofit, i) => (
           <CardFavoritAll key={ favofit.id } favofit={ favofit } index={ i } />
-        ))
-      }
-    </div>
+        ))}
+      </div>
+    </>
   );
 }
 

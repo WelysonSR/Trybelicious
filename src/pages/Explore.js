@@ -3,19 +3,22 @@ import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
+import styles from './Explore.module.css';
 
 function Explore() {
   return (
-    <div>
+    <div className={ styles.back }>
       <Header img1={ Profile } title="Explore" />
 
-      <Link to="/explore/foods">
-        <button type="button" data-testid="explore-foods">Explore Foods</button>
-      </Link>
+      <div className={ styles.container }>
+        <Link to="/explore/foods">
+          <button type="button" data-testid="explore-foods">Explore Foods</button>
+        </Link>
 
-      <Link to="/explore/drinks">
-        <button type="button" data-testid="explore-drinks">Explore Drinks</button>
-      </Link>
+        <Link to="/explore/drinks">
+          <button type="button" data-testid="explore-drinks">Explore Drinks</button>
+        </Link>
+      </div>
 
       <Footer />
     </div>

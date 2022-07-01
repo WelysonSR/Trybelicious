@@ -4,7 +4,7 @@ import Favorite from '../components/Favorite';
 import Recommended from '../components/Recomended';
 import Share from '../components/Share';
 import ingredientFilterList from '../helpers/IngredientFilter';
-import './DetailsFoods.css';
+import styles from './DetailsDrinks.module.css';
 
 function DetailsDrinks() {
   const history = useHistory();
@@ -30,43 +30,53 @@ function DetailsDrinks() {
   const { ingredients, quantity } = ingredientFilterList(recipe);
 
   return (
-    <div>
+    <div className={ styles.container }>
       <img
         data-testid="recipe-photo"
         src={ recipe.strDrinkThumb }
         alt="imagem-receita"
-        className="details-img"
+        className={ styles.img }
       />
-      <h1 data-testid="recipe-title">{ recipe.strDrink }</h1>
-      <p data-testid="recipe-category">
-        { `${recipe.strCategory} / ${recipe.strAlcoholic}` }
-      </p>
-      <Share type="drinks" id={ index } />
-      <Favorite infoRecipe={ recipe } id={ index } type="drink" />
-      <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredients</h3>
-      <ul>
-        {
-          ingredients.map((ingredient, i) => (
-            <li
-              key={ i }
-              data-testid={ `${i}-ingredient-name-and-measure` }
-            >
-              { quantity[i] ? `${ingredient} - ${quantity[i]}` : ingredient }
-            </li>
-          ))
-        }
-      </ul>
-      <h3 data-testid="instructions">Instruções</h3>
-      <p data-testid="instructions">{ recipe.strInstructions }</p>
-      <Recommended type="drinks" api="Meal" />
-      <button
-        data-testid="start-recipe-btn"
-        type="button"
-        onClick={ handleToProgress }
-        className="recipe"
-      >
-        Start Recipe
-      </button>
+      <div className={ styles.divName }>
+        <section className={ styles.sectionName }>
+          <h1 data-testid="recipe-title">{ recipe.strDrink }</h1>
+          <p data-testid="recipe-category">
+            { `${recipe.strCategory} / ${recipe.strAlcoholic}` }
+          </p>
+        </section>
+        <section className={ styles.share }>
+          <Share type="drinks" id={ index } />
+          <Favorite infoRecipe={ recipe } id={ index } type="drink" />
+        </section>
+      </div>
+      <main className={ styles.main }>
+        <h3 data-testid={ `${index}-ingredient-name-and-measure` }>Ingredients</h3>
+        <ul>
+          {
+            ingredients.map((ingredient, i) => (
+              <li
+                key={ i }
+                data-testid={ `${i}-ingredient-name-and-measure` }
+              >
+                { quantity[i] ? `${ingredient} - ${quantity[i]}` : ingredient }
+              </li>
+            ))
+          }
+        </ul>
+        <section className={ styles.instruction }>
+          <h3 data-testid="instructions">Instruções</h3>
+          <p data-testid="instructions">{ recipe.strInstructions }</p>
+        </section>
+        <Recommended type="drinks" api="Meal" />
+        <button
+          data-testid="start-recipe-btn"
+          type="button"
+          onClick={ handleToProgress }
+          className="recipe"
+        >
+          Start Recipe
+        </button>
+      </main>
     </div>
   );
 }

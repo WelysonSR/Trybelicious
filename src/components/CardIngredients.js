@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { saveRecipesExplore } from '../redux/actions';
-import './Card.css';
+import styles from './CardIngredients.module.css';
 
 function CardIngredients({ index, type, recipe }) {
   const dispatch = useDispatch();
@@ -34,22 +34,22 @@ function CardIngredients({ index, type, recipe }) {
   };
 
   return (
-    <Link
-      to={ `/${type}` }
-      onClick={ headleClick }
-    >
-      <div data-testid={ `${index}-ingredient-card` } className="card">
+    <div data-testid={ `${index}-ingredient-card` } className={ styles.card }>
+      <Link
+        to={ `/${type}` }
+        onClick={ headleClick }
+      >
         <img
-          className="card-img"
+          className={ styles.cardImg }
           data-testid={ `${index}-card-img` }
           src={ img }
           alt=""
         />
         <h6 data-testid={ `${index}-card-name` }>
-          { recipe.strIngredient || recipe.strIngredient1 }
+          {recipe.strIngredient || recipe.strIngredient1}
         </h6>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

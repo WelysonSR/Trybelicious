@@ -7,7 +7,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Profile from '../images/profileIcon.svg';
 import Search from '../images/searchIcon.svg';
-import './All.css';
+import styles from './Drinks.module.css';
 
 function Drinks() {
   const [cocktails, setCocktails] = useState([]);
@@ -85,16 +85,16 @@ function Drinks() {
   };
 
   return (
-    <>
+    <div className={ styles.container }>
       <Header img1={ Profile } title="Drinks" img2={ Search } />
-      <section>
+      <section className={ styles.filters }>
         <CategoriesButtons
           categories={ categories }
           handleClick={ ({ target }) => handleClick(target.value) }
           handleClickAll={ () => fetchAllDrinksRecipes() }
         />
       </section>
-      <main className="cardAll">
+      <main className={ styles.cardAll }>
         {
           verifyExplorer && exploreFilter.map((explored, i) => (
             <Card
@@ -133,7 +133,7 @@ function Drinks() {
         }
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

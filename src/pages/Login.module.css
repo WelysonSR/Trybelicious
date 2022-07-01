@@ -12,9 +12,13 @@
 .title {
   color: rgb(251, 220, 67);
   font-weight: 200;
-  margin-bottom: 150px;
+  margin-bottom: 50px;
   text-align: center;
   text-shadow: 3px 2px rgba(0, 0, 0, 0.209);
+}
+
+.title img {
+  height: 250px;
 }
 
 .container input {

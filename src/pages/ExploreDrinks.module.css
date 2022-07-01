@@ -1,0 +1,29 @@
+.container {
+  background-image: url('../images/exp-drink1.jpg');
+  background-position: center;
+  height: 100vh;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+  
+.container button:first-child {
+  margin-top: 150px;
+ }
+  
+.container button {
+  background-color: var(--blue);
+  margin: 10px;
+  margin-left: 55px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.209);
+  color: var(--darkGray);
+  font-size: 1.2rem;
+  height: 45px;
+  transition: 1s ease;
+  padding: 10px;
+  opacity: 0.9;
+  width: 70%;
+}

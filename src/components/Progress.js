@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import Favorite from './Favorite';
 import Share from './Share';
 import ingredientFilterList from '../helpers/IngredientFilter';
-import './Progress.css';
 import { doneRecipeHandler, progressRecipes } from '../helpers/recipeData';
+import styles from './Progress.module.css';
 
 function Progress() {
   const current = new Date();
@@ -98,19 +98,28 @@ function Progress() {
       {
         ingredientList[0]
         && (
-          <div>
-            <img src={ srcImg } data-testid="recipe-photo" alt={ title } />
-            <div>
-              <h1 data-testid="recipe-title">
-                { title }
-              </h1>
-              <h2 data-testid="recipe-category">
-                {
-                  recipe.strCategory
-                }
-              </h2>
-              <Share type={ foodOrDrink } id={ id } />
-              <Favorite infoRecipe={ recipe } id={ id } type={ foodOrDrink } />
+          <div className={ styles.container }>
+            <img
+              src={ srcImg }
+              data-testid="recipe-photo"
+              alt={ title }
+              className={ styles.img }
+            />
+            <div className={ styles.divName }>
+              <section className={ styles.sectionName }>
+                <h1 data-testid="recipe-title">
+                  { title }
+                </h1>
+                <h6 data-testid="recipe-category">
+                  {
+                    recipe.strCategory
+                  }
+                </h6>
+              </section>
+              <section className={ styles.share }>
+                <Share type={ foodOrDrink } id={ id } />
+                <Favorite infoRecipe={ recipe } id={ id } type={ foodOrDrink } />
+              </section>
             </div>
             <div>
               {
@@ -145,6 +154,7 @@ function Progress() {
               {recipe.strInstructions}
             </p>
             <button
+              className={ styles.buttonFinish }
               type="button"
               data-testid="finish-recipe-btn"
               disabled={ isDoneDisable }

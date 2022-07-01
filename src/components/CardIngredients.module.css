@@ -1,12 +1,10 @@
-/* stylelint-disable linebreaks */
-
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap') ;
 
 .card {
   background-color: transparent;
   border: none;
   border-radius: 6px;
-  height: 200px;
+  height: 170px;
   margin: 10px;
   text-align: center;
   width: 42%;
@@ -21,7 +19,7 @@
   overflow: scroll;
 }
 
-.card-img {
+.cardImg {
   border-radius: 10px;
   box-shadow: 0 08px 08px rgba(0, 0, 0, 0.15);
   width: 100%;

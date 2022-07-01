@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { saveEmail } from '../redux/actions';
+import Logo from '../images/trybelicious-teste2.png';
 import styles from './Login.module.css';
 
 function Login() {
@@ -36,8 +37,8 @@ function Login() {
   return (
     <div className={ styles.container }>
       <section className={ styles.title }>
-        <h6>Welcome to</h6>
-        <h1>Trybelicious</h1>
+        <h4>Welcome to</h4>
+        <img src={ Logo } alt="logo" />
       </section>
       <section className={ styles.form }>
         <input

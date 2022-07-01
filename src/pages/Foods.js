@@ -8,7 +8,6 @@ import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
 import Search from '../images/searchIcon.svg';
 import styles from './Foods.module.css';
-import './All.css';
 
 function Foods() {
   const [meal, setMeals] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import './Slider.css';
+import styles from './Recomended.module.css';
 
 function Recommended({ type, api }) {
   const [recommendation, setRecomendation] = useState([]);
@@ -36,12 +36,12 @@ function Recommended({ type, api }) {
 
   return (
     <>
-      <h3>Recommended</h3>
-      <section className="recipeContainer">
+      <h3 className={ styles.title }>Recommended</h3>
+      <section className={ styles.recipeContainer }>
         {
           itens && itens.map((food, index) => (
             <div
-              className="recipeCard"
+              className={ styles.recipeCard }
               key={ index }
               data-testid={ `${index}-recomendation-card` }
             >

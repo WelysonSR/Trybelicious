@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Profile from '../images/profileIcon.svg';
+import styles from './ExploreFoods.module.css';
 
 function ExploreFoods() {
   const history = useHistory();
@@ -14,7 +15,7 @@ function ExploreFoods() {
   };
 
   return (
-    <div>
+    <div className={ styles.container }>
       <Header img1={ Profile } title="Explore Foods" />
       <button
         type="button"

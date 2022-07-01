@@ -5,13 +5,17 @@
   display: flex;
   flex-flow: row wrap;
   flex-wrap: wrap;
-  margin-top: 5px;
+  margin-left: 20px;
+  margin-top: 15px;
   position: relative;
-  width: 100%;
+  width: 90%;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .cardImg {
   width: 140px;
+  border-radius: 10px;
 }
 
 .cardFavorit p {

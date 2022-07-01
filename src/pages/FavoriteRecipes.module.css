@@ -1,0 +1,23 @@
+.container {
+  background-color: var(--background);
+}
+
+.btn {
+  margin-top: 155px;
+  margin-bottom: 20px;
+  margin-left: 22px;
+  background-color: transparent;
+  border: 0.1px solid rgba(0, 0, 0, 0.106);
+  border-radius: 5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  color: var(--red);
+  font-family: Raleway , sans-serif;
+  font-weight: 700;
+  width: 25%;
+}
+
+.favCards {
+  font-family: Raleway , sans-serif;
+  font-weight: 700;
+  color: var(--darkGray);
+}
