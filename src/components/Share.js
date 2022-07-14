@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
+import styles from './Share.module.css';
 
 export default function Share({ type, id }) {
   const [message, setMessage] = useState(false);
@@ -18,10 +19,12 @@ export default function Share({ type, id }) {
   }, [message]);
 
   return (
-    <div>
-      {
-        message && <p>Link copied!</p>
-      }
+    <div className={ styles.container }>
+      <div>
+        {
+          message && <p>Link copied!</p>
+        }
+      </div>
       <button
         type="button"
         data-testid="share-btn"

@@ -10,6 +10,7 @@ function DetailsDrinks() {
   const history = useHistory();
   const pathname = history.location;
   const index = pathname.pathname.split('/')[2];
+  console.log(index);
 
   const [recipe, setRecipe] = useState([]);
 
@@ -67,7 +68,7 @@ function DetailsDrinks() {
           <h3 data-testid="instructions">Instruções</h3>
           <p data-testid="instructions">{ recipe.strInstructions }</p>
         </section>
-        <Recommended type="drinks" api="Meal" />
+        <Recommended type="drinks" api="Meal" typeRecomended="foods" />
         <button
           data-testid="start-recipe-btn"
           type="button"

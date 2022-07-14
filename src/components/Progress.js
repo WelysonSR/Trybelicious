@@ -121,12 +121,12 @@ function Progress() {
                 <Favorite infoRecipe={ recipe } id={ id } type={ foodOrDrink } />
               </section>
             </div>
-            <div>
+            <div className={ styles.ingredient__list }>
               {
                 ingredientList[0].map((ingredient, i) => (
                   <div
                     data-testid={ `${i}-ingredient-step` }
-                    className="ingredient__list"
+                    className={ styles.ingredient__item }
                     key={ i }
                   >
                     <input
@@ -137,7 +137,7 @@ function Progress() {
                     />
                     <p
                       className={ itemChecked[i]
-                        ? 'through'
+                        ? 'styles.through'
                         : '' }
                     >
                       {
@@ -150,7 +150,7 @@ function Progress() {
                 ))
               }
             </div>
-            <p data-testid="instructions">
+            <p data-testid="instructions" className={ styles.instructions }>
               {recipe.strInstructions}
             </p>
             <button

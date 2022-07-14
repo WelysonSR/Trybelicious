@@ -76,7 +76,7 @@ function DetailsFoods() {
                   frameBorder="0"
                 />
               </section>
-              <Recommended type="foods" api="Drink" />
+              <Recommended type="foods" api="Drink" typeRecomended="drinks" />
               <button
                 data-testid="start-recipe-btn"
                 type="button"

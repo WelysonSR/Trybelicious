@@ -1,221 +1,222 @@
 import React from 'react';
 import { screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
-
-const SEARCH_INPUT_TEST_ID = 'search-input';
-const SUBMIT_SEARCH_BUTTON_TEST_ID = 'exec-search-btn';
-const FIRST_LETTER_RADIO_TEST_ID = 'first-letter-search-radio';
-
-const initialState = {
-  user: {
-    email: 'teste@teste.com',
-  },
-  foods: {
-    meals: [],
-    doneRecipes: [],
-  },
-  drinks: {
-    drinks: [],
-  },
-};
+import Drinks from '../pages/Drinks';
+import drinks from '../../cypress/mocks/drinks';
+import drinkCategories from '../../cypress/mocks/drinkCategories';
+import ordinaryDrinks from '../../cypress/mocks/ordinaryDrinks';
+import cocktailDrinks from '../../cypress/mocks/cocktailDrinks';
+import milkDrinks from '../../cypress/mocks/milkDrinks';
+import otherDrinks from '../../cypress/mocks/otherDrinks';
+import cocoaDrinks from '../../cypress/mocks/cocoaDrinks';
+import drinksByIngredient from '../../cypress/mocks/drinksByIngredient';
 
 const TEN_SECONDS = 10000;
+const SUBMIT_SEARCH_BUTTON_TEST_ID = 'exec-search-btn';
 
 describe('Testes da página Drinks', () => {
   jest.setTimeout(TEN_SECONDS);
-  test('Se a rota da página é /drinks e se o título está correto', () => {
-    const { history } = renderWithRouterAndRedux(<App />, initialState, '/drinks');
+
+  afterEach(() => {
+    jest.spyOn(global, 'fetch').mockRestore();
+  });
+
+  const expectDrinkCards = (apiReturn) => {
+    const TWELVE = 12;
+    apiReturn.drinks.forEach((drink, i) => {
+      if (i < TWELVE) {
+        expect(screen.getByTestId(`${i}-recipe-card`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${i}-card-name`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${i}-card-name`))
+          .toHaveTextContent(drink.strDrink);
+        expect(screen.getByTestId(`${i}-card-img`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${i}-card-img`))
+          .toHaveAttribute('src', drink.strDrinkThumb);
+      } else {
+        expect(screen.queryByTestId(`${i}-recipe-card`))
+          .not.toBeInTheDocument();
+        expect(screen.queryByTestId(`${i}-card-name`))
+          .not.toBeInTheDocument();
+        expect(screen.queryByTestId(`${i}-card-img`))
+          .not.toBeInTheDocument();
+      }
+    });
+  };
+
+  test('Se a pagina Drinks é renderizada e se a rota é a correta', async () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
+    const enterButton = screen.getByRole('button', { name: 'ENTER' });
+
+    expect(enterButton).toBeDisabled();
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+
+    userEvent.type(emailInput, 'email@email.com');
+    userEvent.type(passwordInput, 'abcdefgh');
+
+    userEvent.click(enterButton);
+
+    const drinkFooterBtn = screen.getByRole('img', { name: /drink/i });
+    expect(drinkFooterBtn).toBeInTheDocument();
+
+    userEvent.click(drinkFooterBtn);
 
     const { pathname } = history.location;
-    expect(pathname).toBe('/drinks');
-
-    const drinksTitle = screen.getByRole('heading', { name: /drinks/i });
-    expect(drinksTitle).toBeInTheDocument();
-  });
-
-  test('Se existe um botão de perfil, que redireciona para /profile, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/drinks');
-
-      const profileButton = screen.getByRole('img', { name: /profile/i });
-      expect(profileButton).toBeInTheDocument();
-      expect(profileButton).toHaveAttribute('src', 'profileIcon.svg');
-
-      userEvent.click(profileButton);
-      const { pathname } = history.location;
-      expect(pathname).toBe('/profile');
-
-      const profileTitle = screen.getByRole('heading', { name: /profile/i });
-      expect(profileTitle).toBeInTheDocument();
-    });
-
-  test('Se existe um botão de busca no header e se ele renderiza uma img', () => {
-    renderWithRouterAndRedux(<App />, initialState, '/drinks');
-
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
-    expect(searchButton).toHaveAttribute('src', 'searchIcon.svg');
-  });
-
-  test('Se a barra de filtros é renderizada ao clicar no botão search', () => {
-    renderWithRouterAndRedux(<App />, initialState, '/drinks');
-
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
-
-    userEvent.click(searchButton);
-
-    const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-    expect(inputSearch).toBeInTheDocument();
-
-    const ingredientRadioButton = screen.getByTestId('ingredient-search-radio');
-    expect(ingredientRadioButton).toBeInTheDocument();
-
-    const nameRadioButton = screen.getByTestId('name-search-radio');
-    expect(nameRadioButton).toBeInTheDocument();
-
-    const firstLetterRadioButton = screen.getByTestId(FIRST_LETTER_RADIO_TEST_ID);
-    expect(firstLetterRadioButton).toBeInTheDocument();
-
-    const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-    expect(submitSearchButton).toBeInTheDocument();
-  });
-
-  test('Se as receitas são renderizadas ao escolher o filtro "ingredient"', async () => {
-    renderWithRouterAndRedux(<App />, initialState, '/drinks');
-
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
-
-    userEvent.click(searchButton);
-
-    const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-    expect(inputSearch).toBeInTheDocument();
-
-    userEvent.type(inputSearch, 'gin');
-
-    const ingredientRadioButton = screen.getByTestId('ingredient-search-radio');
-    expect(ingredientRadioButton).toBeInTheDocument();
-
-    userEvent.click(ingredientRadioButton);
-
-    const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-    expect(submitSearchButton).toBeInTheDocument();
-
-    userEvent.click(submitSearchButton);
-
     await wait(() => {
-      expect(screen.getByText(/3-mile long island iced tea/i)).toBeInTheDocument();
-    });
-  });
-
-  test('Se as receitas são renderizadas ao escolher o filtro "First Letter"',
-    async () => {
-      renderWithRouterAndRedux(<App />, initialState, '/drinks');
-
-      const searchButton = screen.getByRole('img', { name: /search/i });
-      expect(searchButton).toBeInTheDocument();
-
-      userEvent.click(searchButton);
-
-      const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-      expect(inputSearch).toBeInTheDocument();
-
-      userEvent.type(inputSearch, 'a');
-
-      const firstLetterButton = screen.getByTestId(FIRST_LETTER_RADIO_TEST_ID);
-      expect(firstLetterButton).toBeInTheDocument();
-
-      userEvent.click(firstLetterButton);
-
-      const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-      expect(submitSearchButton).toBeInTheDocument();
-
-      userEvent.click(submitSearchButton);
-
-      await wait(() => {
-        expect(screen.getByText(/a1/i)).toBeInTheDocument();
-      });
-    });
-
-  test('Se é exibido um alerta quando não é encontrada uma receita', async () => {
-    renderWithRouterAndRedux(<App />, initialState, '/drinks');
-
-    global.alert = jest.fn();
-
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
-
-    userEvent.click(searchButton);
-
-    const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-    expect(inputSearch).toBeInTheDocument();
-    userEvent.type(inputSearch, 'cachaça');
-
-    const nameRadioButton = screen.getByTestId('name-search-radio');
-    expect(nameRadioButton).toBeInTheDocument();
-
-    userEvent.click(nameRadioButton);
-
-    const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-    expect(submitSearchButton).toBeInTheDocument();
-
-    userEvent.click(submitSearchButton);
-
-    await wait(() => {
-      expect(global.alert).toHaveBeenCalled();
-    });
-  });
-
-  test('Se existe um botão de drinks, que redireciona para /drinks, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/drinks');
-
-      const drinksButton = screen.getByRole('img', { name: /drink/i });
-      expect(drinksButton).toBeInTheDocument();
-      expect(drinksButton).toHaveAttribute('src', 'drinkIcon.svg');
-
-      userEvent.click(drinksButton);
-      const { pathname } = history.location;
       expect(pathname).toBe('/drinks');
-
-      const drinksTitle = screen.getByRole('heading', { name: /drinks/i });
-      expect(drinksTitle).toBeInTheDocument();
     });
+  });
 
-  test(
-    'Se existe um botão de explore, que redireciona para /explore, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/drinks');
+  test('Se as receitas são renderizadas corretamente', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinkCategories) });
 
-      const exploreButton = screen.getByRole('img', { name: /explore/i });
-      expect(exploreButton).toBeInTheDocument();
-      expect(exploreButton).toHaveAttribute('src', 'exploreIcon.svg');
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinks) });
 
-      userEvent.click(exploreButton);
-      const { pathname } = history.location;
-      expect(pathname).toBe('/explore');
+    renderWithRouterAndRedux(<Drinks />, {}, '/foods');
+    await wait(() => expectDrinkCards(drinks));
+  });
 
-      const exploreTitle = screen.getByRole('heading', { name: /explore/i });
-      expect(exploreTitle).toBeInTheDocument();
-    },
-  );
+  test('Se o filtro por ingrediente renderiza as receitas corretas', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinkCategories) });
 
-  test('Se existe um botão de foods, que redireciona para /foods, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/drinks');
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinks) });
 
-      const foodsButton = screen.getByRole('img', { name: /meal/i });
-      expect(foodsButton).toBeInTheDocument();
-      expect(foodsButton).toHaveAttribute('src', 'mealIcon.svg');
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValueOnce(drinksByIngredient),
+      });
 
-      userEvent.click(foodsButton);
-      const { pathname } = history.location;
-      expect(pathname).toBe('/foods');
+    await act(async () => {
+      renderWithRouterAndRedux(<Drinks />, {}, '/drinks');
 
-      const foodsTitle = screen.getByRole('heading', { name: /foods/i });
-      expect(foodsTitle).toBeInTheDocument();
+      const searchBtn = screen.getByRole('img', { name: /search/i });
+      expect(searchBtn).toBeInTheDocument();
+
+      userEvent.click(searchBtn);
+
+      const searchInput = await screen.findByRole('textbox');
+      expect(searchInput).toBeInTheDocument();
+
+      const submitBtn = await screen.findByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
+      expect(submitBtn).toBeInTheDocument();
+
+      const ingredientRadioFilter = await screen.findByTestId('ingredient-search-radio');
+      expect(ingredientRadioFilter).toBeInTheDocument();
+
+      userEvent.type(searchInput, 'light rum');
+      userEvent.click(ingredientRadioFilter);
+      userEvent.click(submitBtn);
+      await wait(() => expectDrinkCards(drinksByIngredient));
+    });
+  });
+
+  test('Se os botões de categoria são renderizados e suas funcionalidades', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinkCategories) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinks) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(ordinaryDrinks) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(cocktailDrinks) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(milkDrinks) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(otherDrinks) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(cocoaDrinks) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinks) });
+
+    await act(async () => {
+      renderWithRouterAndRedux(<Drinks />, {}, '/drinks');
+
+      const ordinaryFilterBtn = await screen
+        .findByRole('button', { name: /ordinary drink/i });
+      expect(ordinaryFilterBtn).toBeInTheDocument();
+
+      const cocktailsFilterBtn = await screen
+        .findByRole('button', { name: /cocktail/i });
+      expect(cocktailsFilterBtn).toBeInTheDocument();
+
+      const shakeFilterBtn = await screen.findByRole('button', { name: /shake/i });
+      expect(shakeFilterBtn).toBeInTheDocument();
+
+      const otherFilterBtn = await screen.findByRole('button', { name: /other/i });
+      expect(otherFilterBtn).toBeInTheDocument();
+
+      const cocoaFilterBtn = await screen.findByRole('button', { name: /cocoa/i });
+      expect(cocoaFilterBtn).toBeInTheDocument();
+
+      const allFilterBtn = await screen.findByRole('button', { name: /all/i });
+      expect(allFilterBtn).toBeInTheDocument();
+
+      userEvent.click(ordinaryFilterBtn);
+      await wait(() => expectDrinkCards(ordinaryDrinks));
+
+      userEvent.click(cocktailsFilterBtn);
+      await wait(() => expectDrinkCards(cocktailDrinks));
+
+      userEvent.click(shakeFilterBtn);
+      await wait(() => expectDrinkCards(milkDrinks));
+
+      userEvent.click(otherFilterBtn);
+      await wait(() => expectDrinkCards(otherDrinks));
+
+      userEvent.click(cocoaFilterBtn);
+      await wait(() => expectDrinkCards(cocoaDrinks));
+
+      userEvent.click(allFilterBtn);
+      await wait(() => expectDrinkCards(drinks));
+    });
+  });
+
+  test('Se ao clicar novamente em um botão de filtro, o filtro é retirado',
+    async () => {
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({
+          json: jest.fn().mockResolvedValueOnce(drinkCategories),
+        });
+
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinks) });
+
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(ordinaryDrinks) });
+
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinks) });
+
+      await act(async () => {
+        renderWithRouterAndRedux(<Drinks />, {}, '/drinks');
+
+        const ordinaryFilterBtn = await screen
+          .findByRole('button', { name: /ordinary drink/i });
+
+        userEvent.click(ordinaryFilterBtn);
+
+        await wait(() => expectDrinkCards(ordinaryDrinks));
+
+        userEvent.click(ordinaryFilterBtn);
+
+        await wait(() => expectDrinkCards(drinks));
+      });
     });
 });

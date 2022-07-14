@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styles from './Recomended.module.css';
 
-function Recommended({ type, api }) {
+function Recommended({ type, api, typeRecomended }) {
   const [recommendation, setRecomendation] = useState([]);
   const [itens, setItens] = useState();
   const Thumb = `str${api}Thumb`;
@@ -40,21 +41,26 @@ function Recommended({ type, api }) {
       <section className={ styles.recipeContainer }>
         {
           itens && itens.map((food, index) => (
-            <div
-              className={ styles.recipeCard }
+            <Link
               key={ index }
-              data-testid={ `${index}-recomendation-card` }
+              to={ `/${typeRecomended}/${food.idMeal || food.idDrink}` }
             >
-              <img
-                className="tamanho-right"
-                src={ food[Thumb] }
-                alt={ food[Name] }
-              />
-              <p>{ food.strAlcoholic }</p>
-              <h2 data-testid={ `${index}-recomendation-title` }>
-                { food[Name] }
-              </h2>
-            </div>
+              <div
+                className={ styles.recipeCard }
+                key={ index }
+                data-testid={ `${index}-recomendation-card` }
+              >
+                <img
+                  className="tamanho-right"
+                  src={ food[Thumb] }
+                  alt={ food[Name] }
+                />
+                <p>{ food.strAlcoholic }</p>
+                <h2 data-testid={ `${index}-recomendation-title` }>
+                  { food[Name] }
+                </h2>
+              </div>
+            </Link>
           ))
         }
       </section>
@@ -65,6 +71,7 @@ function Recommended({ type, api }) {
 Recommended.propTypes = {
   type: PropTypes.string.isRequired,
   api: PropTypes.string.isRequired,
+  typeRecomended: PropTypes.string.isRequired,
 };
 
 export default Recommended;

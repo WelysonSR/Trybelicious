@@ -85,55 +85,57 @@ function Drinks() {
   };
 
   return (
-    <div className={ styles.container }>
+    <>
       <Header img1={ Profile } title="Drinks" img2={ Search } />
-      <section className={ styles.filters }>
-        <CategoriesButtons
-          categories={ categories }
-          handleClick={ ({ target }) => handleClick(target.value) }
-          handleClickAll={ () => fetchAllDrinksRecipes() }
-        />
-      </section>
-      <main className={ styles.cardAll }>
-        {
-          verifyExplorer && exploreFilter.map((explored, i) => (
-            <Card
-              key={ i }
-              img={ explored.strDrinkThumb }
-              title={ explored.strDrink }
-              index={ i }
-              id={ explored.idDrink }
-              type="drinks"
-            />
-          ))
-        }
-        {
-          cocktails.length === 0 && allRecipes.map((recipe, i) => (
-            <Card
-              key={ recipe.idDrink }
-              title={ recipe.strDrink }
-              img={ recipe.strDrinkThumb }
-              index={ i }
-              id={ recipe.idDrink }
-              type="drinks"
-            />
-          ))
-        }
-        {
-          cocktails.length > 0 && cocktails.map((card, i) => (
-            <Card
-              key={ card.idDrink }
-              title={ card.strDrink }
-              img={ card.strDrinkThumb }
-              index={ i }
-              id={ card.idDrink }
-              type="drinks"
-            />
-          ))
-        }
-      </main>
-      <Footer />
-    </div>
+      <div className={ styles.container }>
+        <section className={ styles.filters }>
+          <CategoriesButtons
+            categories={ categories }
+            handleClick={ ({ target }) => handleClick(target.value) }
+            handleClickAll={ () => fetchAllDrinksRecipes() }
+          />
+        </section>
+        <main className={ styles.cardAll }>
+          {
+            verifyExplorer && exploreFilter.map((explored, i) => (
+              <Card
+                key={ i }
+                img={ explored.strDrinkThumb }
+                title={ explored.strDrink }
+                index={ i }
+                id={ explored.idDrink }
+                type="drinks"
+              />
+            ))
+          }
+          {
+            cocktails.length === 0 && allRecipes.map((recipe, i) => (
+              <Card
+                key={ recipe.idDrink }
+                title={ recipe.strDrink }
+                img={ recipe.strDrinkThumb }
+                index={ i }
+                id={ recipe.idDrink }
+                type="drinks"
+              />
+            ))
+          }
+          {
+            cocktails.length > 0 && cocktails.map((card, i) => (
+              <Card
+                key={ card.idDrink }
+                title={ card.strDrink }
+                img={ card.strDrinkThumb }
+                index={ i }
+                id={ card.idDrink }
+                type="drinks"
+              />
+            ))
+          }
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }
 

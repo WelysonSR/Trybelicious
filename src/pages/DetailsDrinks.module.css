@@ -23,18 +23,26 @@
   flex-direction: row;
   justify-content: space-between;
   width: 90%;
+  position: relative;
 }
 
 .sectionName {
   display: flex;
   flex-direction: column;
   text-align: left;
+  width: 80%;
+}
+
+.sectionName h1 {
+  width: 100%;
 }
 
 .share {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
+  position: absolute;
+  right: 0;
 }
 
 .main {
@@ -53,5 +61,18 @@
 
 .main button {
   background-color: var(--red);
-  border-radius: 10px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.209);
+  color: var(--background);
+  font-size: 1.2rem;
+  font-weight: 700;
+  height: 40px;
+  text-align: center;
+  transition: 1s ease;
+  width: 100%;
+}
+
+.instruction {
+  text-align: justify;
 }

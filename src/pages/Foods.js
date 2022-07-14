@@ -86,55 +86,57 @@ function Foods() {
   };
 
   return (
-    <div className={ styles.container }>
+    <>
       <Header img1={ Profile } title="Foods" img2={ Search } />
-      <section className={ styles.filters }>
-        <CategoriesButtons
-          categories={ categories }
-          handleClick={ ({ target }) => handleClick(target.value) }
-          handleClickAll={ () => fetchAllFoodRecipes() }
-        />
-      </section>
-      <main className={ styles.cardAll }>
-        {
-          verifyExplorer && exploreFilter.map((explored, i) => (
-            <Card
-              key={ explored.idMeal }
-              img={ explored.strMealThumb }
-              title={ explored.strMeal }
-              index={ i }
-              id={ explored.idMeal }
-              type="foods"
-            />
-          ))
-        }
-        {
-          meal.length === 0 && allRecipes.map((recipe, i) => (
-            <Card
-              key={ recipe.idMeal }
-              img={ recipe.strMealThumb }
-              title={ recipe.strMeal }
-              index={ i }
-              id={ recipe.idMeal }
-              type="foods"
-            />
-          ))
-        }
-        {
-          meal.length > 0 && meal.map((card, i) => (
-            <Card
-              key={ card.idMeal }
-              img={ card.strMealThumb }
-              title={ card.strMeal }
-              index={ i }
-              id={ card.idMeal }
-              type="foods"
-            />
-          ))
-        }
-      </main>
-      <Footer />
-    </div>
+      <div className={ styles.container }>
+        <section className={ styles.filters }>
+          <CategoriesButtons
+            categories={ categories }
+            handleClick={ ({ target }) => handleClick(target.value) }
+            handleClickAll={ () => fetchAllFoodRecipes() }
+          />
+        </section>
+        <main className={ styles.cardAll }>
+          {
+            verifyExplorer && exploreFilter.map((explored, i) => (
+              <Card
+                key={ explored.idMeal }
+                img={ explored.strMealThumb }
+                title={ explored.strMeal }
+                index={ i }
+                id={ explored.idMeal }
+                type="foods"
+              />
+            ))
+          }
+          {
+            meal.length === 0 && allRecipes.map((recipe, i) => (
+              <Card
+                key={ recipe.idMeal }
+                img={ recipe.strMealThumb }
+                title={ recipe.strMeal }
+                index={ i }
+                id={ recipe.idMeal }
+                type="foods"
+              />
+            ))
+          }
+          {
+            meal.length > 0 && meal.map((card, i) => (
+              <Card
+                key={ card.idMeal }
+                img={ card.strMealThumb }
+                title={ card.strMeal }
+                index={ i }
+                id={ card.idMeal }
+                type="foods"
+              />
+            ))
+          }
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }
 

@@ -1,111 +1,91 @@
 import React from 'react';
 import { screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
-import App from '../App';
+import Drinks from '../pages/Drinks';
+import drinks from '../../cypress/mocks/drinks';
+import drinkCategories from '../../cypress/mocks/drinkCategories';
+import oneDrink from '../../cypress/mocks/oneDrink';
 
 const TEN_SECONDS = 10000;
+const SUBMIT_SEARCH_BUTTON_TEST_ID = 'exec-search-btn';
 
-const initialState = {
-  user: {
-    email: 'teste@teste.com',
-  },
-  foods: {
-    meals: [],
-    doneRecipes: [],
-  },
-  drinks: {
-    drinks: [],
-  },
-};
-
-describe('Continuação dos testes da página drinks', () => {
+describe('Continuação dos testes da página Drinks', () => {
   jest.setTimeout(TEN_SECONDS);
-  test('Se ao clicar nos filtros, renderiza as receitas corretas', async () => {
-    renderWithRouterAndRedux(<App />, initialState, '/drinks');
 
-    const ordinaryFilter = await screen.findByRole('button', { name: /ordinary drink/i });
-    expect(ordinaryFilter).toBeInTheDocument();
+  afterEach(() => {
+    jest.spyOn(global, 'fetch').mockRestore();
+  });
 
-    userEvent.click(ordinaryFilter);
+  test('Se é exibido um alerta quando não é encontrada uma receita', async () => {
+    renderWithRouterAndRedux(<Drinks />, {}, '/drinks');
 
-    await wait(() => {
-      expect(screen.getByText(/3-mile long island iced tea/i)).toBeInTheDocument();
-    });
+    global.alert = jest.fn();
 
-    const cocktailFilter = await screen.findByRole('button', { name: /cocktail/i });
-    expect(cocktailFilter).toBeInTheDocument();
+    await act(async () => {
+      const searchBtn = screen.getByRole('img', { name: /search/i });
+      expect(searchBtn).toBeInTheDocument();
 
-    userEvent.click(cocktailFilter);
+      userEvent.click(searchBtn);
 
-    await wait(() => {
-      expect(screen.getByText(/belmont/i)).toBeInTheDocument();
-    });
+      const searchInput = await screen.findByRole('textbox');
+      expect(searchInput).toBeInTheDocument();
 
-    const shakeFilter = await screen.findByRole('button', { name: /shake/i });
-    expect(shakeFilter).toBeInTheDocument();
+      const submitBtn = await screen.findByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
+      expect(submitBtn).toBeInTheDocument();
 
-    userEvent.click(shakeFilter);
+      const nameRadioFilter = await screen.findByTestId('name-search-radio');
+      expect(nameRadioFilter).toBeInTheDocument();
 
-    await wait(() => {
-      expect(screen.getByText(/avalanche/i)).toBeInTheDocument();
-    });
-
-    const otherFilter = await screen.findByRole('button', { name: /other\/unknown/i });
-    expect(otherFilter).toBeInTheDocument();
-
-    userEvent.click(otherFilter);
-
-    await wait(() => {
-      expect(screen.getByText(/a piece of ass/i)).toBeInTheDocument();
-    });
-
-    const cocoaFilter = await screen.findByRole('button', { name: /cocoa/i });
-    expect(cocoaFilter).toBeInTheDocument();
-
-    userEvent.click(cocoaFilter);
-
-    await wait(() => {
-      expect(screen.getByText(/castillian hot chocolate/i)).toBeInTheDocument();
-    });
-
-    const allFilter = await screen.findByRole('button', { name: /all/i });
-    expect(allFilter).toBeInTheDocument();
-
-    userEvent.click(allFilter);
-
-    await wait(() => {
-      expect(screen.getByText(/gg/i)).toBeInTheDocument();
+      userEvent.type(searchInput, 'arroz');
+      userEvent.click(nameRadioFilter);
+      userEvent.click(submitBtn);
+      await wait(() => {
+        expect(global.alert).toHaveBeenCalled();
+      });
     });
   });
 
   test(
     'Se a resposta de 1 filtro for apenas 1 receita, redireciona para detalhes da mesma',
     async () => {
-      renderWithRouterAndRedux(<App />, initialState, '/drinks');
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({
+          json: jest.fn().mockResolvedValueOnce(drinkCategories),
+        });
 
-      const searchButton = screen.getByRole('img', { name: /search/i });
-      expect(searchButton).toBeInTheDocument();
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(drinks) });
 
-      userEvent.click(searchButton);
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(oneDrink) });
 
-      const inputSearch = screen.getByTestId('search-input');
-      expect(inputSearch).toBeInTheDocument();
+      await act(async () => {
+        const { history } = renderWithRouterAndRedux(<Drinks />, {}, '/drinks');
 
-      userEvent.type(inputSearch, 'abc');
+        const searchBtn = screen.getByRole('img', { name: /search/i });
+        expect(searchBtn).toBeInTheDocument();
 
-      const nameRadioButton = screen.getByTestId('name-search-radio');
-      expect(nameRadioButton).toBeInTheDocument();
+        userEvent.click(searchBtn);
 
-      userEvent.click(nameRadioButton);
+        const searchInput = await screen.findByRole('textbox');
+        expect(searchInput).toBeInTheDocument();
 
-      const submitSearchButton = screen.getByTestId('exec-search-btn');
-      expect(submitSearchButton).toBeInTheDocument();
+        const submitBtn = await screen.findByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
+        expect(submitBtn).toBeInTheDocument();
 
-      userEvent.click(submitSearchButton);
+        const nameRadioFilter = await screen.findByTestId('name-search-radio');
+        expect(nameRadioFilter).toBeInTheDocument();
 
-      await wait(() => {
-        expect(screen.getByTestId('share-btn')).toBeInTheDocument();
+        userEvent.type(searchInput, 'aquamarine');
+        userEvent.click(nameRadioFilter);
+        userEvent.click(submitBtn);
+
+        await wait(() => {
+          const { pathname } = history.location;
+          expect(pathname).toBe('/drinks/178319');
+        });
       });
     },
   );

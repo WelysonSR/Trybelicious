@@ -1,6 +1,6 @@
 export function doneRecipeHandler(recipe, type, doneDate) {
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
-
+  console.log(recipe.strTags);
   const done = {
     id: recipe.idMeal || recipe.idDrink,
     type: type.split('s')[0],
@@ -10,7 +10,7 @@ export function doneRecipeHandler(recipe, type, doneDate) {
     name: recipe.strMeal || recipe.strDrink,
     image: recipe.strMealThumb || recipe.strDrinkThumb,
     doneDate,
-    tags: recipe.strTags || '',
+    tags: recipe.strTags !== null ? recipe.strTags.split(',') : [],
   };
   const newDoneRecipe = [...doneRecipes, done];
   localStorage.setItem('doneRecipes', JSON.stringify(newDoneRecipe));

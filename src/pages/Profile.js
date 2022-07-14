@@ -25,11 +25,13 @@ function Profile() {
   };
 
   return (
-    <>
+    <div>
       <Header img1={ ProfileIcon } title="Profile" />
       <div className="profile-container">
-        <div className="user-email">
+
+        <div>
           <h5
+            className="user-email"
             data-testid="profile-email"
           >
             {userEmail}
@@ -62,10 +64,10 @@ function Profile() {
             Logout
           </button>
         </div>
+
         <Footer />
       </div>
-
-    </>
+    </div>
   );
 }
 

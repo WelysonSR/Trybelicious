@@ -10,17 +10,17 @@ describe('Testes da página Login', () => {
 
     const emailInput = screen.getByTestId('email-input');
     const passwordInput = screen.getByTestId('password-input');
-    const enterButton = screen.getByRole('button', { name: 'Enter' });
+    const enterButton = screen.getByRole('button', { name: 'ENTER' });
 
     expect(enterButton).toBeDisabled();
     expect(emailInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
 
     userEvent.type(emailInput, 'email@email.com');
-    userEvent.type(passwordInput, '1234567');
+    userEvent.type(passwordInput, 'abcdefgh');
 
     expect(emailInput).toHaveValue('email@email.com');
-    expect(passwordInput).toHaveValue('1234567');
+    expect(passwordInput).toHaveValue('abcdefgh');
     expect(enterButton).toBeEnabled();
 
     userEvent.click(enterButton);

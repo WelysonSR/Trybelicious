@@ -1,234 +1,215 @@
+/* eslint-disable max-lines */
 import React from 'react';
 import { screen, wait } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import renderWithRouterAndRedux from './helpers/renderWithRouterAndRedux';
 import App from '../App';
-
-const SEARCH_INPUT_TEST_ID = 'search-input';
-const SUBMIT_SEARCH_BUTTON_TEST_ID = 'exec-search-btn';
-const FIRST_LETTER_RADIO_TEST_ID = 'first-letter-search-radio';
-
-const initialState = {
-  user: {
-    email: 'teste@teste.com',
-  },
-  foods: {
-    meals: [],
-    doneRecipes: [],
-  },
-  drinks: {
-    drinks: [],
-  },
-};
+import Foods from '../pages/Foods';
+import meals from '../../cypress/mocks/meals';
+import mealCategories from '../../cypress/mocks/mealCategories';
+import beefMeals from '../../cypress/mocks/beefMeals';
+import breakfastMeals from '../../cypress/mocks/breakfastMeals';
+import chickenMeals from '../../cypress/mocks/chickenMeals';
+import dessertMeals from '../../cypress/mocks/dessertMeals';
+import goatMeals from '../../cypress/mocks/goatMeals';
+import mealsByIngredient from '../../cypress/mocks/mealsByIngredient';
 
 const TEN_SECONDS = 10000;
+const SUBMIT_SEARCH_BUTTON_TEST_ID = 'exec-search-btn';
 
 describe('Testes da página Foods', () => {
   jest.setTimeout(TEN_SECONDS);
-  test('Se a rota da página é /foods e se o título está correto', () => {
-    const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
+
+  afterEach(() => {
+    jest.spyOn(global, 'fetch').mockRestore();
+  });
+
+  const expectFoodCards = (apiReturn) => {
+    const TWELVE = 12;
+    apiReturn.meals.forEach((meal, i) => {
+      if (i < TWELVE) {
+        expect(screen.getByTestId(`${i}-recipe-card`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${i}-card-name`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${i}-card-name`))
+          .toHaveTextContent(meal.strMeal);
+        expect(screen.getByTestId(`${i}-card-img`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${i}-card-img`))
+          .toHaveAttribute('src', meal.strMealThumb);
+      } else {
+        expect(screen.queryByTestId(`${i}-recipe-card`))
+          .not.toBeInTheDocument();
+        expect(screen.queryByTestId(`${i}-card-name`))
+          .not.toBeInTheDocument();
+        expect(screen.queryByTestId(`${i}-card-img`))
+          .not.toBeInTheDocument();
+      }
+    });
+  };
+
+  test('Se a pagina Foods é renderizada e se a rota é a correta', () => {
+    const { history } = renderWithRouterAndRedux(<App />);
+
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
+    const enterButton = screen.getByRole('button', { name: 'ENTER' });
+
+    expect(enterButton).toBeDisabled();
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+
+    userEvent.type(emailInput, 'email@email.com');
+    userEvent.type(passwordInput, 'abcdefgh');
+
+    userEvent.click(enterButton);
+
+    const title = screen.getByRole('heading', { name: 'Foods' });
+    expect(title).toBeInTheDocument();
 
     const { pathname } = history.location;
     expect(pathname).toBe('/foods');
-
-    const foodTitle = screen.getByRole('heading', { name: /foods/i });
-    expect(foodTitle).toBeInTheDocument();
   });
 
-  test('Se existe um botão de perfil, que redireciona para /profile, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
+  test('Se as receitas são renderizadas corretamente', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(mealCategories) });
 
-      const profileButton = screen.getByRole('img', { name: /profile/i });
-      expect(profileButton).toBeInTheDocument();
-      expect(profileButton).toHaveAttribute('src', 'profileIcon.svg');
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(meals) });
 
-      userEvent.click(profileButton);
-      const { pathname } = history.location;
-      expect(pathname).toBe('/profile');
-
-      const profileTitle = screen.getByRole('heading', { name: /profile/i });
-      expect(profileTitle).toBeInTheDocument();
-    });
-
-  test('Se existe um botão de busca no header e se ele renderiza uma img', () => {
-    renderWithRouterAndRedux(<App />, initialState, '/foods');
-
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
-    expect(searchButton).toHaveAttribute('src', 'searchIcon.svg');
+    renderWithRouterAndRedux(<Foods />, {}, '/foods');
+    await wait(() => expectFoodCards(meals));
   });
 
-  test('Se a barra de filtros é renderizada ao clicar no botão search', () => {
-    renderWithRouterAndRedux(<App />, initialState, '/foods');
+  test('Se o filtro por ingrediente renderiza as receitas corretas', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(mealCategories) });
 
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(meals) });
 
-    userEvent.click(searchButton);
-
-    const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-    expect(inputSearch).toBeInTheDocument();
-
-    const ingredientRadioButton = screen.getByTestId('ingredient-search-radio');
-    expect(ingredientRadioButton).toBeInTheDocument();
-
-    const nameRadioButton = screen.getByTestId('name-search-radio');
-    expect(nameRadioButton).toBeInTheDocument();
-
-    const firstLetterRadioButton = screen.getByTestId(FIRST_LETTER_RADIO_TEST_ID);
-    expect(firstLetterRadioButton).toBeInTheDocument();
-
-    const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-    expect(submitSearchButton).toBeInTheDocument();
-  });
-
-  test('Se as receitas são renderizadas ao escolher o filtro "ingredient"', async () => {
-    renderWithRouterAndRedux(<App />, initialState, '/foods');
-
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
-
-    userEvent.click(searchButton);
-
-    const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-    expect(inputSearch).toBeInTheDocument();
-
-    userEvent.type(inputSearch, 'chicken');
-
-    const ingredientRadioButton = screen.getByTestId('ingredient-search-radio');
-    expect(ingredientRadioButton).toBeInTheDocument();
-
-    userEvent.click(ingredientRadioButton);
-
-    const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-    expect(submitSearchButton).toBeInTheDocument();
-
-    userEvent.click(submitSearchButton);
-
-    await wait(() => {
-      expect(screen.getByText(/brown stew chicken/i)).toBeInTheDocument();
-      expect(screen.getByText(/chicken & mushroom hotpot/i)).toBeInTheDocument();
-      expect(screen.getByText(/chicken alfredo primavera/i)).toBeInTheDocument();
-      expect(screen.getByText(/chicken basquaise/i)).toBeInTheDocument();
-      expect(screen.getByText(/chicken congee/i)).toBeInTheDocument();
-      expect(screen.getByText(/chicken handi/i)).toBeInTheDocument();
-      expect(screen.getByText(/kentucky fried chicken/i)).toBeInTheDocument();
-      expect(screen.getByText(/kung pao chicken/i)).toBeInTheDocument();
-      expect(screen.getByText(/pad see ew/i)).toBeInTheDocument();
-      expect(screen.getByText(/piri-piri chicken and slaw/i)).toBeInTheDocument();
-      expect(screen.getByText(/thai green curry/i)).toBeInTheDocument();
-    });
-  });
-
-  test('Se as receitas são renderizadas ao escolher o filtro "First Letter"',
-    async () => {
-      renderWithRouterAndRedux(<App />, initialState, '/foods');
-
-      const searchButton = screen.getByRole('img', { name: /search/i });
-      expect(searchButton).toBeInTheDocument();
-
-      userEvent.click(searchButton);
-
-      const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-      expect(inputSearch).toBeInTheDocument();
-
-      userEvent.type(inputSearch, 'a');
-
-      const firstLetterButton = screen.getByTestId(FIRST_LETTER_RADIO_TEST_ID);
-      expect(firstLetterButton).toBeInTheDocument();
-
-      userEvent.click(firstLetterButton);
-
-      const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-      expect(submitSearchButton).toBeInTheDocument();
-
-      userEvent.click(submitSearchButton);
-
-      await wait(() => {
-        expect(screen.getByText(/apple frangipan tart/i)).toBeInTheDocument();
-        expect(screen.getByText(/apple & blackberry crumble/i)).toBeInTheDocument();
-        expect(screen.getByText(/apam balik/i)).toBeInTheDocument();
-        expect(screen.getByText(/ayam percik/i)).toBeInTheDocument();
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValueOnce(mealsByIngredient),
       });
-    });
 
-  test('Se é exibido um alerta quando não é encontrada uma receita', async () => {
-    renderWithRouterAndRedux(<App />, initialState, '/foods');
+    await act(async () => {
+      renderWithRouterAndRedux(<Foods />, {}, '/foods');
 
-    global.alert = jest.fn();
+      const searchBtn = screen.getByRole('img', { name: /search/i });
+      expect(searchBtn).toBeInTheDocument();
 
-    const searchButton = screen.getByRole('img', { name: /search/i });
-    expect(searchButton).toBeInTheDocument();
+      userEvent.click(searchBtn);
 
-    userEvent.click(searchButton);
+      const searchInput = await screen.findByRole('textbox');
+      expect(searchInput).toBeInTheDocument();
 
-    const inputSearch = screen.getByTestId(SEARCH_INPUT_TEST_ID);
-    expect(inputSearch).toBeInTheDocument();
-    userEvent.type(inputSearch, 'arroz');
+      const submitBtn = await screen.findByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
+      expect(submitBtn).toBeInTheDocument();
 
-    const nameRadioButton = screen.getByTestId('name-search-radio');
-    expect(nameRadioButton).toBeInTheDocument();
+      const ingredientRadioFilter = await screen.findByTestId('ingredient-search-radio');
+      expect(ingredientRadioFilter).toBeInTheDocument();
 
-    userEvent.click(nameRadioButton);
-
-    const submitSearchButton = screen.getByTestId(SUBMIT_SEARCH_BUTTON_TEST_ID);
-    expect(submitSearchButton).toBeInTheDocument();
-
-    userEvent.click(submitSearchButton);
-
-    await wait(() => {
-      expect(global.alert).toHaveBeenCalled();
+      userEvent.type(searchInput, 'chicken');
+      userEvent.click(ingredientRadioFilter);
+      userEvent.click(submitBtn);
+      await wait(() => expectFoodCards(mealsByIngredient));
     });
   });
 
-  test('Se existe um botão de drinks, que redireciona para /drinks, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
+  test('Se os botões de categoria são renderizados e suas funcionalidades', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(mealCategories) });
 
-      const drinksButton = screen.getByRole('img', { name: /drink/i });
-      expect(drinksButton).toBeInTheDocument();
-      expect(drinksButton).toHaveAttribute('src', 'drinkIcon.svg');
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(meals) });
 
-      userEvent.click(drinksButton);
-      const { pathname } = history.location;
-      expect(pathname).toBe('/drinks');
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(beefMeals) });
 
-      const drinksTitle = screen.getByRole('heading', { name: /drinks/i });
-      expect(drinksTitle).toBeInTheDocument();
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(breakfastMeals) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(chickenMeals) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(dessertMeals) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(goatMeals) });
+
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(meals) });
+
+    await act(async () => {
+      renderWithRouterAndRedux(<Foods />, {}, '/foods');
+
+      const beefFilterBtn = await screen.findByRole('button', { name: /beef/i });
+      expect(beefFilterBtn).toBeInTheDocument();
+
+      const breakFastFilterBtn = await screen
+        .findByRole('button', { name: /breakfast/i });
+      expect(breakFastFilterBtn).toBeInTheDocument();
+
+      const chickenFilterBtn = await screen.findByRole('button', { name: /chicken/i });
+      expect(chickenFilterBtn).toBeInTheDocument();
+
+      const dessertFilterBtn = await screen.findByRole('button', { name: /dessert/i });
+      expect(dessertFilterBtn).toBeInTheDocument();
+
+      const goatFilterBtn = await screen.findByRole('button', { name: /goat/i });
+      expect(goatFilterBtn).toBeInTheDocument();
+
+      const allFilterBtn = await screen.findByRole('button', { name: /all/i });
+      expect(allFilterBtn).toBeInTheDocument();
+
+      userEvent.click(beefFilterBtn);
+      await wait(() => expectFoodCards(beefMeals));
+
+      userEvent.click(breakFastFilterBtn);
+      await wait(() => expectFoodCards(breakfastMeals));
+
+      userEvent.click(chickenFilterBtn);
+      await wait(() => expectFoodCards(chickenMeals));
+
+      userEvent.click(dessertFilterBtn);
+      await wait(() => expectFoodCards(dessertMeals));
+
+      userEvent.click(goatFilterBtn);
+      await wait(() => expectFoodCards(goatMeals));
+
+      userEvent.click(allFilterBtn);
+      await wait(() => expectFoodCards(meals));
     });
+  });
 
-  test(
-    'Se existe um botão de explore, que redireciona para /explore, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
+  test('Se ao clicar novamente em um botão de filtro, o filtro é retirado',
+    async () => {
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(mealCategories) });
 
-      const exploreButton = screen.getByRole('img', { name: /explore/i });
-      expect(exploreButton).toBeInTheDocument();
-      expect(exploreButton).toHaveAttribute('src', 'exploreIcon.svg');
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(meals) });
 
-      userEvent.click(exploreButton);
-      const { pathname } = history.location;
-      expect(pathname).toBe('/explore');
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(beefMeals) });
 
-      const exploreTitle = screen.getByRole('heading', { name: /explore/i });
-      expect(exploreTitle).toBeInTheDocument();
-    },
-  );
+      jest.spyOn(global, 'fetch')
+        .mockResolvedValueOnce({ json: jest.fn().mockResolvedValueOnce(meals) });
 
-  test('Se existe um botão de foods, que redireciona para /foods, e renderiza uma img',
-    () => {
-      const { history } = renderWithRouterAndRedux(<App />, initialState, '/foods');
+      await act(async () => {
+        renderWithRouterAndRedux(<Foods />, {}, '/foods');
 
-      const foodsButton = screen.getByRole('img', { name: /meal/i });
-      expect(foodsButton).toBeInTheDocument();
-      expect(foodsButton).toHaveAttribute('src', 'mealIcon.svg');
+        const beefFilterBtn = await screen.findByRole('button', { name: /beef/i });
 
-      userEvent.click(foodsButton);
-      const { pathname } = history.location;
-      expect(pathname).toBe('/foods');
+        userEvent.click(beefFilterBtn);
 
-      const foodsTitle = screen.getByRole('heading', { name: /foods/i });
-      expect(foodsTitle).toBeInTheDocument();
+        await wait(() => expectFoodCards(beefMeals));
+
+        userEvent.click(beefFilterBtn);
+
+        await wait(() => expectFoodCards(meals));
+      });
     });
 });

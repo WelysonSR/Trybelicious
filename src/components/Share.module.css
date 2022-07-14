@@ -1,0 +1,11 @@
+.container {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  width: 150px;
+}
+
+.container p {
+  font-size: 12px;
+}
